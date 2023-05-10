@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import NavbarComp from "./components/NavbarComp";
 import { PrimaryContextProvider } from "./context/PrimaryContext";
 import Login from "./components/Login";
+import UserManagement from "./components/UserManagement";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/calendar" element={<CalendarComponent />} />
             <Route path="/bookings" element={<Bookings />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/usermanagement" element={<UserManagement />} />
           </Routes>
         </div>
       </BrowserRouter>

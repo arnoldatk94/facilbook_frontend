@@ -13,14 +13,14 @@ export default function Login() {
   } = useAuth0();
 
   // Code results in infinite loop as isAuthenticated doesn't get updated fast enough before user is redirected to login
-  useEffect(() => {
-    if (isAuthenticated) {
-      console.log("Line 25");
-    } else {
-      console.log("Line 27");
-      loginWithRedirect();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     console.log("Line 25");
+  //   } else {
+  //     console.log("Line 27");
+  //     loginWithRedirect();
+  //   }
+  // }, []);
 
   return (
     <div>

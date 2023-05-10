@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./CalendarComponent.css";
 import { PrimaryContext } from "../context/PrimaryContext";
 import moment from "moment-timezone";
 import "moment/locale/en-sg";
@@ -17,7 +16,6 @@ export default function CalendarComponent() {
   const [selectedProperty, setSelectedProperty] = useState("");
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedDay, setSelectedDay] = useState(new Date());
-  // Hard code user_id
 
   // Click on event, then click on day to navigate to specific date
   function handleNavigate(date) {
@@ -28,6 +26,7 @@ export default function CalendarComponent() {
   const handleSelectEvent = (event) => {
     setSelectedDay(event.startTime);
     setSelectedEvent(event);
+    console.log(event);
   };
 
   // Format booking in state
@@ -38,6 +37,9 @@ export default function CalendarComponent() {
     usersProperties,
     properties
   ) => {
+    if (!bookings || !bookings.length) {
+      return [];
+    }
     return bookings.map((booking) => {
       const user = users.find((user) => user.id === booking.user_id);
       const facility = facilities.find(
@@ -58,11 +60,12 @@ export default function CalendarComponent() {
         startTime: new Date(booking.start_time),
         endTime: new Date(booking.end_time),
         color: property.color,
+        booking_id: booking.id,
       };
     });
   };
 
-  // Check length then load
+  // Check length then load on start
   useEffect(() => {
     if (
       users.length > 0 &&
@@ -82,6 +85,18 @@ export default function CalendarComponent() {
     }
   }, [users, properties, usersProperties, facilities, bookings]);
 
+  useEffect(() => {
+    const formattedBookings = formatBookingsData(
+      bookings,
+      users,
+      facilities,
+      usersProperties,
+      properties
+    );
+    setLocalBookings(formattedBookings);
+  }, [bookings, users, facilities, usersProperties, properties]);
+
+  // Filter by property
   const handlePropertyChange = (event) => {
     setSelectedProperty(event.target.value);
   };
@@ -95,6 +110,7 @@ export default function CalendarComponent() {
 
   return (
     <div>
+      <NewBooking />
       {/* Dropdown filter */}
       {/* <div>
         <label htmlFor="property-filter">Filter by property:</label>
@@ -115,7 +131,6 @@ export default function CalendarComponent() {
 
       {/* Calendar goes here */}
       <div style={{ height: "90vh" }}>
-        <NewBooking />
         <Calendar
           localizer={localizer}
           events={filteredBookings}

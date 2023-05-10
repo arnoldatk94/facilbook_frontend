@@ -18,10 +18,79 @@ export const PrimaryContextProvider = ({ children }) => {
   const [loggedInUsersProperties, setLoggedInUsersProperties] = useState(null);
 
   useEffect(() => {
+    console.log("users", users);
+  }, [users]);
+
+  const addBookings = async (newBooking) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/bookings/`, {
+        start_time: newBooking.start_time,
+        end_time: newBooking.end_time,
+        user_id: newBooking.user_id,
+        user_property_id: newBooking.user_property_id,
+        property_id: newBooking.property_id,
+        facility_id: parseInt(newBooking.facility_id),
+      });
+
+      const bookingsResponse = response;
+      // console.log("bookingsResponse updated", bookingsResponse);
+      const filteredBookings = bookingsResponse.data.filter((booking) =>
+        loggedInUsersProperties.some(
+          (property) => property.property_id === booking.property_id
+        )
+      );
+
+      setBookings(filteredBookings);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteBooking = async (bookingId) => {
+    try {
+      const response = await axios.delete(
+        `${BACKEND_URL}/bookings/${bookingId}`
+      );
+      const bookingsResponse = response;
+      // console.log("bookingsResponse updated", bookingsResponse);
+      const filteredBookings = loggedInUsersProperties
+        ? bookingsResponse.data.filter((booking) =>
+            loggedInUsersProperties.some(
+              (property) => property.property_id === booking.property_id
+            )
+          )
+        : bookingsResponse.data;
+      setBookings(filteredBookings);
+
+      setBookings(response.data);
+    } catch (error) {
+      console.log(error);
+      // handle error
+    }
+  };
+
+  const updateUserData = async (id, phone) => {
+    axios
+      .put(`${BACKEND_URL}/users/`, {
+        id: id,
+        phone: parseInt(phone),
+      })
+      .then((response) => {
+        console.log("updated phone", response.data);
+        setLoggedInUser(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
+  useEffect(() => {
     const fetchData = async () => {
       if (isAuthenticated) {
         const token = await getAccessTokenSilently();
-        const response = await axios.post(
+
+        // Fetch user data
+        const userResponse = await axios.post(
           `${BACKEND_URL}/users/`,
           { email: user.email },
           {
@@ -30,17 +99,12 @@ export const PrimaryContextProvider = ({ children }) => {
             },
           }
         );
-        setLoggedInUser(response.data);
-      }
-    };
-    fetchData();
-  }, [getAccessTokenSilently, isAuthenticated]);
+        const loggedInUser = userResponse.data;
+        console.log("context level", loggedInUser);
+        setLoggedInUser(loggedInUser);
 
-  useEffect(() => {
-    const fetchUsersProperties = async () => {
-      if (loggedInUser) {
-        const token = await getAccessTokenSilently();
-        const response = await axios.post(
+        // Fetch user properties
+        const userPropertiesResponse = await axios.post(
           `${BACKEND_URL}/users_properties`,
           { userId: loggedInUser.id },
           {
@@ -49,12 +113,28 @@ export const PrimaryContextProvider = ({ children }) => {
             },
           }
         );
-        setLoggedInUsersProperties(response.data);
+        const loggedInUsersProperties = userPropertiesResponse.data;
+        setLoggedInUsersProperties(loggedInUsersProperties);
+
+        // Fetch bookings and filter by user properties
+        const bookingsResponse = await axios.get(`${BACKEND_URL}/bookings`);
+        // console.log("bookingsResponse", bookingsResponse);
+        const filteredBookings = loggedInUsersProperties
+          ? bookingsResponse.data.filter((booking) =>
+              loggedInUsersProperties.some(
+                (property) => property.property_id === booking.property_id
+              )
+            )
+          : bookingsResponse.data;
+        setBookings(filteredBookings);
+      } else {
+        setLoggedInUser(null);
+        setLoggedInUsersProperties(null);
+        setBookings([]);
       }
     };
-
-    fetchUsersProperties();
-  }, [loggedInUser, getAccessTokenSilently]);
+    fetchData();
+  }, [getAccessTokenSilently, isAuthenticated]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -77,16 +157,10 @@ export const PrimaryContextProvider = ({ children }) => {
       setFacilities(response.data);
     };
 
-    const fetchBookings = async () => {
-      const response = await axios.get(`${BACKEND_URL}/bookings`);
-      setBookings(response.data);
-    };
-
     fetchUsers();
     fetchProperties();
     fetchUsersProperties();
     fetchFacilities();
-    fetchBookings();
   }, []);
 
   const contextValues = {
@@ -97,6 +171,9 @@ export const PrimaryContextProvider = ({ children }) => {
     bookings,
     loggedInUser,
     loggedInUsersProperties,
+    addBookings,
+    deleteBooking,
+    updateUserData,
   };
 
   return (

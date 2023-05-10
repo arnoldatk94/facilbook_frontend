@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import "./Bookings.css";
+// import "./Bookings.css";
 
 import { PrimaryContext } from "../context/PrimaryContext";
 
@@ -13,6 +13,7 @@ export default function Bookings() {
     facilities,
     bookings,
     loggedInUser,
+    deleteBooking,
   } = useContext(PrimaryContext);
 
   useEffect(() => {
@@ -20,35 +21,76 @@ export default function Bookings() {
   });
 
   // Format booking in state
+  // const formatBookingsData = (
+  //   bookings,
+  //   users,
+  //   facilities,
+  //   usersProperties,
+  //   properties
+  // ) => {
+  //   return bookings.map((booking) => {
+  //     const user = users.find((user) => user.id === booking.user_id);
+  //     const facility = facilities.find(
+  //       (facility) => facility.id === booking.facility_id
+  //     );
+  //     const userProperty = usersProperties.find(
+  //       (property) => property.id === booking.user_property_id
+  //     );
+  //     const property = properties.find(
+  //       (property) => property.id === booking.property_id
+  //     );
+
+  //     return {
+  //       user: `${user.first_name} ${user.last_name}`,
+  //       facility: facility.name,
+  //       property: property.name,
+  //       unitNo: userProperty.unit_no,
+  //       startTime: new Date(booking.start_time),
+  //       endTime: new Date(booking.end_time),
+  //       color: property.color,
+  //       booking_id: booking.id,
+  //     };
+  //   });
+  // };
+
   const formatBookingsData = (
     bookings,
     users,
     facilities,
     usersProperties,
-    properties
+    properties,
+    loggedInUser
   ) => {
-    return bookings.map((booking) => {
-      const user = users.find((user) => user.id === booking.user_id);
-      const facility = facilities.find(
-        (facility) => facility.id === booking.facility_id
-      );
-      const userProperty = usersProperties.find(
-        (property) => property.id === booking.user_property_id
-      );
-      const property = properties.find(
-        (property) => property.id === booking.property_id
-      );
+    return bookings
+      .filter((booking) => {
+        if (loggedInUser.id !== 1) {
+          return booking.user_id === loggedInUser.id;
+        }
+        return true;
+      })
+      .map((booking) => {
+        const user = users.find((user) => user.id === booking.user_id);
+        const facility = facilities.find(
+          (facility) => facility.id === booking.facility_id
+        );
+        const userProperty = usersProperties.find(
+          (property) => property.id === booking.user_property_id
+        );
+        const property = properties.find(
+          (property) => property.id === booking.property_id
+        );
 
-      return {
-        user: `${user.first_name} ${user.last_name}`,
-        facility: facility.name,
-        property: property.name,
-        unitNo: userProperty.unit_no,
-        startTime: new Date(booking.start_time),
-        endTime: new Date(booking.end_time),
-        color: property.color,
-      };
-    });
+        return {
+          user: `${user.first_name} ${user.last_name}`,
+          facility: facility.name,
+          property: property.name,
+          unitNo: userProperty.unit_no,
+          startTime: new Date(booking.start_time),
+          endTime: new Date(booking.end_time),
+          color: property.color,
+          booking_id: booking.id,
+        };
+      });
   };
 
   useEffect(() => {
@@ -64,7 +106,8 @@ export default function Bookings() {
         users,
         facilities,
         usersProperties,
-        properties
+        properties,
+        loggedInUser
       );
       setLocalBookings(formattedBookings);
     }
@@ -73,6 +116,10 @@ export default function Bookings() {
   useEffect(() => {
     setFilteredData(localBookings);
   }, [localBookings]);
+
+  useEffect(() => {
+    console.log(filteredData);
+  });
 
   const handleFilterChange = (e) => {
     const value = e.target.value.toLowerCase();
@@ -87,12 +134,13 @@ export default function Bookings() {
   };
 
   const handleDelete = (row) => {
-    console.log(row);
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this booking?"
+    );
+    if (shouldDelete) {
+      deleteBooking(row.booking_id);
+    }
   };
-
-  // useEffect(() => {
-  //   console.log("localBookings", localBookings);
-  // });
 
   return (
     <div>
