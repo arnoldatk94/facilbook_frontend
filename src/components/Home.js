@@ -15,20 +15,6 @@ export default function Home() {
   const { loggedInUser, loggedInUsersProperties, properties, updateUserData } =
     useContext(PrimaryContext);
 
-  // const updateUserData = async () => {
-  //   axios
-  //     .put(`${BACKEND_URL}/users/`, {
-  //       id: loggedInUser.id,
-  //       phone: updatedUser.phone,
-  //     })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response.data);
-  //     });
-  // };
-
   const handleEditClick = () => {
     setIsEditing(true);
   };

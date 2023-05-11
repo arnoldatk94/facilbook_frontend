@@ -53,67 +53,62 @@ export default function UserManagement() {
 
   return (
     <div>
-      {loggedInUser && loggedInUser.id === 1 ? (
-        <div>
-          <h2>Welcome!</h2>
-          <table className="my-table">
-            <thead>
-              <tr>
-                <th>
-                  <input
-                    type="text"
-                    placeholder="Search by User"
-                    value={filters.userName}
-                    onChange={handleFilterChange("userName")}
-                  />
-                </th>
-                <th>
-                  <input
-                    type="text"
-                    placeholder="Search by Property"
-                    value={filters.propertyName}
-                    onChange={handleFilterChange("propertyName")}
-                  />
-                </th>
-                <th>
-                  <input
-                    type="text"
-                    placeholder="Search by Unit No."
-                    value={filters.unitNo}
-                    onChange={handleFilterChange("unitNo")}
-                  />
-                </th>
-                <th>
-                  <input
-                    type="text"
-                    placeholder="Search by Management"
-                    value={filters.isManagement}
-                    onChange={handleFilterChange("isManagement")}
-                  />
-                </th>
+      <div>
+        <table className="my-table">
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="text"
+                  placeholder="Search by User"
+                  value={filters.userName}
+                  onChange={handleFilterChange("userName")}
+                />
+              </th>
+              <th>
+                <input
+                  type="text"
+                  placeholder="Search by Property"
+                  value={filters.propertyName}
+                  onChange={handleFilterChange("propertyName")}
+                />
+              </th>
+              <th>
+                <input
+                  type="text"
+                  placeholder="Search by Unit No."
+                  value={filters.unitNo}
+                  onChange={handleFilterChange("unitNo")}
+                />
+              </th>
+              <th>
+                <input
+                  type="text"
+                  placeholder="Search by Management"
+                  value={filters.isManagement}
+                  onChange={handleFilterChange("isManagement")}
+                />
+              </th>
+            </tr>
+            <tr>
+              <th>User Name</th>
+              <th>Property Name</th>
+              <th>Unit No</th>
+              <th>Is Management</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsersProperties.map((up) => (
+              <tr key={up.id}>
+                <td>{renderUserName(up.user_id)}</td>
+                <td>{renderPropertyName(up.property_id)}</td>
+                <td>{up.unit_no}</td>
+                <td>{up.is_management ? "Yes" : "No"}</td>
               </tr>
-              <tr>
-                <th>User Name</th>
-                <th>Property Name</th>
-                <th>Unit No</th>
-                <th>Is Management</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsersProperties.map((up) => (
-                <tr key={up.id}>
-                  <td>{renderUserName(up.user_id)}</td>
-                  <td>{renderPropertyName(up.property_id)}</td>
-                  <td>{up.unit_no}</td>
-                  <td>{up.is_management ? "Yes" : "No"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <h2>Restricted page</h2>
-      )}
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -10,6 +10,7 @@ export const PrimaryContextProvider = ({ children }) => {
   const [properties, setProperties] = useState([]);
   const [usersProperties, setUsersProperties] = useState([]);
   const [facilities, setFacilities] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
   const [bookings, setBookings] = useState([]);
 
   // Auth0 Login and linking to backend
@@ -17,9 +18,35 @@ export const PrimaryContextProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loggedInUsersProperties, setLoggedInUsersProperties] = useState(null);
 
-  useEffect(() => {
-    console.log("users", users);
-  }, [users]);
+  const addFeedback = async (newFeedback) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/feedbacks/`, {
+        facility_id: newFeedback.facility_id,
+        user_property_id: newFeedback.user_property_id,
+        user_id: loggedInUser.id,
+        property_id: newFeedback.property_id,
+        comment: newFeedback.comment,
+      });
+      setFeedbacks(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const replyFeedback = async (feedbackId, reply, completed) => {
+    try {
+      const response = await axios.put(
+        `${BACKEND_URL}/feedbacks/${feedbackId}`,
+        {
+          reply,
+          completed,
+        }
+      );
+      setFeedbacks(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const addBookings = async (newBooking) => {
     try {
@@ -69,21 +96,29 @@ export const PrimaryContextProvider = ({ children }) => {
     }
   };
 
-  const updateUserData = async (id, phone) => {
-    axios
-      .put(`${BACKEND_URL}/users/`, {
-        id: id,
-        phone: parseInt(phone),
-      })
-      .then((response) => {
-        console.log("updated phone", response.data);
-        setLoggedInUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+  const addUser = async (newUser) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/users/add`, newUser);
+      setUsers(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  const updateUserData = async (id, phone) => {
+    try {
+      const response = await axios.put(`${BACKEND_URL}/users/`, {
+        id: id,
+        phone: parseInt(phone),
+      });
+      console.log("updated phone", response.data);
+      setLoggedInUser(response.data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+  // Retrieved logged in user details
   useEffect(() => {
     const fetchData = async () => {
       if (isAuthenticated) {
@@ -100,7 +135,7 @@ export const PrimaryContextProvider = ({ children }) => {
           }
         );
         const loggedInUser = userResponse.data;
-        console.log("context level", loggedInUser);
+        // console.log("context level", loggedInUser);
         setLoggedInUser(loggedInUser);
 
         // Fetch user properties
@@ -136,6 +171,7 @@ export const PrimaryContextProvider = ({ children }) => {
     fetchData();
   }, [getAccessTokenSilently, isAuthenticated]);
 
+  // Gett all and load first
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await axios.get(`${BACKEND_URL}/users`);
@@ -157,10 +193,16 @@ export const PrimaryContextProvider = ({ children }) => {
       setFacilities(response.data);
     };
 
+    const fetchFeedbacks = async () => {
+      const response = await axios.get(`${BACKEND_URL}/feedbacks`);
+      setFeedbacks(response.data);
+    };
+
     fetchUsers();
     fetchProperties();
     fetchUsersProperties();
     fetchFacilities();
+    fetchFeedbacks();
   }, []);
 
   const contextValues = {
@@ -168,12 +210,16 @@ export const PrimaryContextProvider = ({ children }) => {
     properties,
     usersProperties,
     facilities,
+    feedbacks,
     bookings,
     loggedInUser,
     loggedInUsersProperties,
     addBookings,
     deleteBooking,
+    addUser,
     updateUserData,
+    addFeedback,
+    replyFeedback,
   };
 
   return (

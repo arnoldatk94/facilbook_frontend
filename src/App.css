@@ -4,23 +4,35 @@
 
 .my-table {
   border-collapse: collapse;
-  border: 1px solid #000000;
+  border: 1px solid #dddddd;
   width: 100%;
   margin-top: 20px;
-}
-
-.my-table th,
-.my-table td {
-  border: 1px solid #000000;
-  padding: 8px;
+  background: #ffffff;
+  background: linear-gradient(to bottom, #ffffff, #f2f2f2);
 }
 
 .my-table thead {
-  background-color: #f2f2f2;
+  background-color: #f1f1f1;
 }
 
 .my-table th {
-  border: 1px solid #000000;
-  text-align: center;
+  font-size: 16px;
   font-weight: bold;
+  text-align: left;
+  padding: 12px 15px;
+  color: #333333;
+}
+
+.my-table td {
+  font-size: 14px;
+  padding: 10px 15px;
+  color: #555555;
+}
+
+.my-table tr {
+  transition: background-color 0.3s ease;
+}
+
+.my-table tr:hover {
+  background-color: #f5f5f5;
 }

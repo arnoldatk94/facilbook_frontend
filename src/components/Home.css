@@ -1,14 +1,17 @@
 .my-table {
   border-collapse: collapse;
-  border: 1px solid #000000;
-  width: 100%;
+  border: 1px solid #ccc;
   margin-top: 20px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .my-table th,
 .my-table td {
-  border: 1px solid #000000;
-  padding: 8px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
 }
 
 .my-table thead {
@@ -16,7 +19,5 @@
 }
 
 .my-table th {
-  border: 1px solid #000000;
-  text-align: center;
   font-weight: bold;
 }

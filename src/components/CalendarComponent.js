@@ -112,7 +112,7 @@ export default function CalendarComponent() {
     <div>
       <NewBooking />
       {/* Dropdown filter */}
-      {/* <div>
+      <div>
         <label htmlFor="property-filter">Filter by property:</label>
         <select
           id="property-filter"
@@ -127,7 +127,7 @@ export default function CalendarComponent() {
             </option>
           ))}
         </select>
-      </div> */}
+      </div>
 
       {/* Calendar goes here */}
       <div style={{ height: "90vh" }}>
