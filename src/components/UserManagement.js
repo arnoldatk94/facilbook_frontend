@@ -2,15 +2,37 @@ import React, { useContext, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 
 export default function UserManagement() {
-  const { properties, users, usersProperties, loggedInUser } =
+  const { properties, users, usersProperties, addNewUserProperty } =
     useContext(PrimaryContext);
-
   const [filters, setFilters] = useState({
     userName: "",
     propertyName: "",
     unitNo: "",
     isManagement: "",
   });
+  const [formData, setFormData] = useState({
+    propertyId: "",
+    userId: "",
+    unitNo: "",
+    isManagement: false,
+  });
+
+  const handleFormChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("formData", formData);
+    addNewUserProperty(formData);
+  };
 
   const handleFilterChange = (filterKey) => (event) => {
     setFilters({
@@ -54,6 +76,57 @@ export default function UserManagement() {
   return (
     <div>
       <div>
+        <form onSubmit={handleSubmit}>
+          <label>
+            User:
+            <select
+              name="userId"
+              value={formData.userId}
+              onChange={handleFormChange}
+            >
+              <option value="">Select a user</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.first_name} {user.last_name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Property:
+            <select
+              name="propertyId"
+              value={formData.propertyId}
+              onChange={handleFormChange}
+            >
+              <option value="">Select a property</option>
+              {properties.map((property) => (
+                <option key={property.id} value={property.id}>
+                  {property.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Unit No:
+            <input
+              type="text"
+              name="unitNo"
+              value={formData.unitNo}
+              onChange={handleFormChange}
+            />
+          </label>
+          <label>
+            Is Management:
+            <input
+              type="checkbox"
+              name="isManagement"
+              checked={formData.isManagement}
+              onChange={handleFormChange}
+            />
+          </label>
+          <button type="submit">Add User Property</button>
+        </form>
         <table className="my-table">
           <thead>
             <tr>

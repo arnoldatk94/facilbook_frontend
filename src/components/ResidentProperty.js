@@ -31,10 +31,6 @@ export default function ResidentProperty() {
   });
 
   useEffect(() => {
-    console.log(newFeedback);
-  }, [newFeedback]);
-
-  useEffect(() => {
     if (loggedInUser !== null) {
       setNewFeedback((prevFeedback) => ({
         ...prevFeedback,

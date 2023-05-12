@@ -1,8 +1,6 @@
 import "./Home.css";
 import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
-import axios from "axios";
-import { BACKEND_URL } from "../constant";
 
 export default function Home() {
   const [isEditing, setIsEditing] = useState(false);

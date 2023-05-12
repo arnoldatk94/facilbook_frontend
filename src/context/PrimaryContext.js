@@ -18,6 +18,10 @@ export const PrimaryContextProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loggedInUsersProperties, setLoggedInUsersProperties] = useState(null);
 
+  useEffect(() => {
+    console.log(loggedInUser);
+  }, [loggedInUser]);
+
   const addFeedback = async (newFeedback) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/feedbacks/`, {
@@ -28,6 +32,24 @@ export const PrimaryContextProvider = ({ children }) => {
         comment: newFeedback.comment,
       });
       setFeedbacks(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateFacility = async (facilityId, newFacilityRules) => {
+    try {
+      const response = await axios.put(
+        `${BACKEND_URL}/facilities/${facilityId}`,
+        {
+          start_time: newFacilityRules.start_time,
+          end_time: newFacilityRules.end_time,
+          max_capacity: newFacilityRules.max_capacity,
+          booking_limit: newFacilityRules.booking_limit,
+          closed_for_maintenance: newFacilityRules.closed_for_maintenance,
+        }
+      );
+      setFacilities(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -118,6 +140,35 @@ export const PrimaryContextProvider = ({ children }) => {
     }
   };
 
+  const editManagementUserData = async (id, updatedUser) => {
+    try {
+      const response = await axios.put(`${BACKEND_URL}/users/${id}`, {
+        first_name: updatedUser.first_name,
+        last_name: updatedUser.last_name,
+        phone: parseInt(updatedUser.phone) || null,
+      });
+      console.log("updated user", response.data);
+      setUsers(response.data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+  const addNewUserProperty = async (formData) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/users_properties/add`, {
+        property_id: formData.propertyId,
+        user_id: formData.userId,
+        unit_no: formData.unitNo,
+        is_management: formData.isManagement,
+      });
+      console.log(response.data); // this logs the updated list of allUserProperties
+      setUsersProperties(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   // Retrieved logged in user details
   useEffect(() => {
     const fetchData = async () => {
@@ -127,7 +178,11 @@ export const PrimaryContextProvider = ({ children }) => {
         // Fetch user data
         const userResponse = await axios.post(
           `${BACKEND_URL}/users/`,
-          { email: user.email },
+          {
+            email: user.email,
+            first_name: user.name,
+            last_name: user.name,
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -217,9 +272,12 @@ export const PrimaryContextProvider = ({ children }) => {
     addBookings,
     deleteBooking,
     addUser,
+    editManagementUserData,
     updateUserData,
     addFeedback,
     replyFeedback,
+    updateFacility,
+    addNewUserProperty,
   };
 
   return (
