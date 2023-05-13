@@ -18,10 +18,6 @@ export const PrimaryContextProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loggedInUsersProperties, setLoggedInUsersProperties] = useState(null);
 
-  useEffect(() => {
-    console.log(loggedInUser);
-  }, [loggedInUser]);
-
   const addFeedback = async (newFeedback) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/feedbacks/`, {
@@ -34,6 +30,23 @@ export const PrimaryContextProvider = ({ children }) => {
       setFeedbacks(response.data);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const addFacility = async (newFacility) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/facilities`, {
+        property_id: newFacility.property_id,
+        start_time: newFacility.start_time,
+        end_time: newFacility.end_time,
+        max_capacity: newFacility.max_capacity,
+        booking_limit: newFacility.booking_limit,
+        photoUrl: newFacility.photoUrl,
+        name: newFacility.name,
+      });
+      setFacilities(response.data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -169,6 +182,11 @@ export const PrimaryContextProvider = ({ children }) => {
     }
   };
 
+  const addProperties = async (data) => {
+    const response = await axios.post(`${BACKEND_URL}/properties`, data);
+    setProperties(response.data);
+  };
+
   // Retrieved logged in user details
   useEffect(() => {
     const fetchData = async () => {
@@ -278,6 +296,8 @@ export const PrimaryContextProvider = ({ children }) => {
     replyFeedback,
     updateFacility,
     addNewUserProperty,
+    addProperties,
+    addFacility,
   };
 
   return (

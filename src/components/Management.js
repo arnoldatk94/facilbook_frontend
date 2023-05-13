@@ -4,6 +4,8 @@ import Property from "./Property";
 import User from "./User";
 import UserManagement from "./UserManagement";
 import "./Management.css";
+import NewProperties from "./NewProperties";
+import NewFacilities from "./NewFacilities";
 
 export default function Management() {
   const { loggedInUser } = useContext(PrimaryContext);
@@ -17,6 +19,10 @@ export default function Management() {
         return <User />;
       case "userProperties":
         return <UserManagement />;
+      case "newProperties":
+        return <NewProperties />;
+      case "newFacilities":
+        return <NewFacilities />;
       default:
         return null;
     }
@@ -54,6 +60,26 @@ export default function Management() {
             >
               <a className="nav-link" href="#">
                 User Properties
+              </a>
+            </li>
+            <li
+              className={`nav-item ${
+                activeTab === "newProperties" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("newProperties")}
+            >
+              <a className="nav-link" href="#">
+                New Properties
+              </a>
+            </li>
+            <li
+              className={`nav-item ${
+                activeTab === "newFacilities" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("newFacilities")}
+            >
+              <a className="nav-link" href="#">
+                New Facilities
               </a>
             </li>
           </ul>

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
+import "./UserManagement.css";
 
 export default function UserManagement() {
   const { properties, users, usersProperties, addNewUserProperty } =
@@ -76,7 +77,7 @@ export default function UserManagement() {
   return (
     <div>
       <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="my-form">
           <label>
             User:
             <select

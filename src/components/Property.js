@@ -35,13 +35,13 @@ export default function Property() {
     closed_for_maintenance: false,
   });
 
-  useEffect(() => {
-    console.log(selectedFacility);
-  }, [selectedFacility]);
+  // useEffect(() => {
+  //   console.log(selectedFacility);
+  // }, [selectedFacility]);
 
-  useEffect(() => {
-    console.log(editFacility);
-  }, [editFacility]);
+  // useEffect(() => {
+  //   console.log(editFacility);
+  // }, [editFacility]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
