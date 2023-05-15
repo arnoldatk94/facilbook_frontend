@@ -1,6 +1,7 @@
 import "./Home.css";
 import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
+import ResidentRequestLink from "./ResidentRequestLink";
 
 export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
@@ -34,14 +35,14 @@ export default function Home() {
     setIsEditing(false);
   };
 
-  useEffect(() => {
-    if (loggedInUser !== null) {
-      console.log("Logged In User: ", loggedInUser);
-      console.log("Logged In User Properties: ", loggedInUsersProperties);
-    } else {
-      console.log("Not logged in");
-    }
-  }, [loggedInUser, loggedInUsersProperties]);
+  // useEffect(() => {
+  //   if (loggedInUser !== null) {
+  //     console.log("Logged In User: ", loggedInUser);
+  //     console.log("Logged In User Properties: ", loggedInUsersProperties);
+  //   } else {
+  //     console.log("Not logged in");
+  //   }
+  // }, [loggedInUser, loggedInUsersProperties]);
 
   const propertyMap = properties.reduce((map, property) => {
     map[property.id] = property.name;
@@ -116,6 +117,7 @@ export default function Home() {
             ))}
         </tbody>
       </table>
+      <ResidentRequestLink />
     </div>
   );
 }

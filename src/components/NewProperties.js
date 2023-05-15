@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { PrimaryContext } from "../context/PrimaryContext";
+import EditProperties from "./EditProperties";
 
 export default function NewProperties() {
   const { addProperties } = useContext(PrimaryContext);
@@ -54,7 +55,6 @@ export default function NewProperties() {
 
   return (
     <div>
-      <h2>New Property Form</h2>
       <form onSubmit={handleSubmit}>
         <table style={{ margin: "auto" }}>
           <tbody>
@@ -130,6 +130,7 @@ export default function NewProperties() {
           </tbody>
         </table>
       </form>
+      <EditProperties />
     </div>
   );
 }

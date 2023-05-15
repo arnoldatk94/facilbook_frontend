@@ -12,11 +12,50 @@ export const PrimaryContextProvider = ({ children }) => {
   const [facilities, setFacilities] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [linkRequests, setLinkRequests] = useState([]);
+
+  useEffect(() => {
+    console.log(linkRequests);
+  }, [linkRequests]);
 
   // Auth0 Login and linking to backend
   const { getAccessTokenSilently, isAuthenticated, user } = useAuth0();
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loggedInUsersProperties, setLoggedInUsersProperties] = useState(null);
+
+  const addLinkRequest = async (data) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/link_properties/`, {
+        property_id: data.property_id,
+        user_id: data.user_id,
+        unit_no: data.unit_no,
+      });
+      setLinkRequests(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const updateLinkRequest = async (id, reqStatus) => {
+    try {
+      const response = await axios.put(`${BACKEND_URL}/link_properties/${id}`, {
+        request_status: reqStatus,
+      });
+      setLinkRequests(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteLinkRequest = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${BACKEND_URL}/link_properties/${id}`
+      );
+      setLinkRequests(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const addFeedback = async (newFeedback) => {
     try {
@@ -187,6 +226,11 @@ export const PrimaryContextProvider = ({ children }) => {
     setProperties(response.data);
   };
 
+  const updateProperties = async (id, data) => {
+    const response = await axios.put(`${BACKEND_URL}/properties/${id}`, data);
+    setProperties(response.data);
+  };
+
   // Retrieved logged in user details
   useEffect(() => {
     const fetchData = async () => {
@@ -261,6 +305,11 @@ export const PrimaryContextProvider = ({ children }) => {
       setUsersProperties(response.data);
     };
 
+    const fetchLinkRequests = async () => {
+      const response = await axios.get(`${BACKEND_URL}/link_properties`);
+      setLinkRequests(response.data);
+    };
+
     const fetchFacilities = async () => {
       const response = await axios.get(`${BACKEND_URL}/facilities`);
       setFacilities(response.data);
@@ -276,6 +325,7 @@ export const PrimaryContextProvider = ({ children }) => {
     fetchUsersProperties();
     fetchFacilities();
     fetchFeedbacks();
+    fetchLinkRequests();
   }, []);
 
   const contextValues = {
@@ -287,6 +337,7 @@ export const PrimaryContextProvider = ({ children }) => {
     bookings,
     loggedInUser,
     loggedInUsersProperties,
+    linkRequests,
     addBookings,
     deleteBooking,
     addUser,
@@ -298,6 +349,10 @@ export const PrimaryContextProvider = ({ children }) => {
     addNewUserProperty,
     addProperties,
     addFacility,
+    updateProperties,
+    updateLinkRequest,
+    deleteLinkRequest,
+    addLinkRequest,
   };
 
   return (

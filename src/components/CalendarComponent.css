@@ -1,22 +1,32 @@
-.my-table {
-  border-collapse: collapse;
-  border: 1px solid #000000;
-  width: 100%;
-  margin-top: 20px;
+.selected-event {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px 0;
+  font-size: 18px;
+  line-height: 1.5;
 }
 
-.my-table th,
-.my-table td {
-  border: 1px solid #000000;
-  padding: 8px;
+.selected-event h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
-.my-table thead {
-  background-color: #f2f2f2;
+.selected-event p {
+  margin: 5px 0;
 }
 
-.my-table th {
-  border: 1px solid #000000;
-  text-align: center;
-  font-weight: bold;
+.selected-event button {
+  background-color: #afafaf;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.selected-event button:hover {
+  background-color: #7b7b7b;
 }

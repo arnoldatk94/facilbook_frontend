@@ -1,3 +1,5 @@
+import "./CalendarComponent.css";
+
 import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import moment from "moment-timezone";
@@ -5,6 +7,7 @@ import "moment/locale/en-sg";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import NewBooking from "./NewBooking";
+import { Button } from "react-bootstrap";
 
 const localizer = momentLocalizer(moment);
 
@@ -110,25 +113,34 @@ export default function CalendarComponent() {
 
   return (
     <div>
-      <NewBooking />
       {/* Dropdown filter */}
       <div>
-        <label htmlFor="property-filter">Filter by property:</label>
-        <select
-          id="property-filter"
-          name="property-filter"
-          value={selectedProperty}
-          onChange={handlePropertyChange}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+          }}
         >
-          <option value="">All</option>
-          {properties.map((property) => (
-            <option key={property.id} value={property.name}>
-              {property.name}
-            </option>
-          ))}
-        </select>
+          <label htmlFor="property-filter">Filter by property:</label>
+          <select
+            id="property-filter"
+            name="property-filter"
+            value={selectedProperty}
+            onChange={handlePropertyChange}
+          >
+            <option value="">All</option>
+            {properties.map((property) => (
+              <option key={property.id} value={property.name}>
+                {property.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
+      <NewBooking />
       {/* Calendar goes here */}
       <div style={{ height: "90vh" }}>
         <Calendar
@@ -149,14 +161,18 @@ export default function CalendarComponent() {
           })}
         />
         {selectedEvent && (
-          <div style={{ backgroundColor: selectedEvent.color }}>
+          <div
+            className="selected-event"
+            style={{ backgroundColor: selectedEvent.color }}
+          >
             <h2>Selected Event</h2>
             <p>{selectedEvent.property}</p>
             <p>{selectedEvent.facility}</p>
             <p>{selectedEvent.unitNo}</p>
-            <p>Start: {moment(selectedEvent.startTime).format("lll")}</p>
-            <p>End: {moment(selectedEvent.endTime).format("lll")}</p>
-            <button onClick={() => setSelectedEvent(null)}>Cancel</button>
+            <p>Start: {moment(selectedEvent.startTime).format("h:mm a")}</p>
+            <p>End: {moment(selectedEvent.endTime).format("h:mm a")}</p>
+
+            <button onClick={() => setSelectedEvent(null)}>Close</button>
           </div>
         )}
       </div>

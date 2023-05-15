@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import moment from "moment";
+import { Button } from "react-bootstrap";
 
 export default function NewBooking() {
   const [newBooking, setNewBooking] = useState({
@@ -39,6 +40,11 @@ export default function NewBooking() {
   // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!newBooking.property_id || !newBooking.facility_id) {
+      alert("Please select a property and facility.");
+      return;
+    }
 
     const existingBooking = bookings.find(
       (booking) =>
@@ -138,13 +144,6 @@ export default function NewBooking() {
     }
   }, [loggedInUser]);
 
-  //Check user properties
-  // useEffect(() => {
-  //   if (loggedInUsersProperties !== null) {
-  //     console.log(loggedInUsersProperties);
-  //   }
-  // }, [loggedInUsersProperties]);
-
   // Check facilities
   useEffect(() => {
     console.log(facilities);
@@ -176,40 +175,6 @@ export default function NewBooking() {
       </select>
     );
   };
-
-  // Check bookings from state
-  // useEffect(() => {
-  //   console.log(bookings);
-  // }, [bookings]);
-
-  // const renderFacilityDropdown = () => {
-  //   if (!newBooking.user_property_id) {
-  //     // If user hasn't selected a property yet, don't show the dropdown
-  //     return null;
-  //   }
-  //   const propertyFacilities = facilities.filter(
-  //     (facility) => facility.property_id === newBooking.property_id
-  //   );
-  //   return (
-  //     <select
-  //       onChange={handleInputChange}
-  //       name="facility_id"
-  //       value={newBooking.facility_id}
-  //     >
-  //       <option value="">Select a Facility</option>
-  //       {propertyFacilities.map((facility) => (
-  //         <option
-  //           key={facility.id}
-  //           value={parseInt(facility.id)}
-  //           disabled={facility.closed_for_maintenance}
-  //         >
-  //           {facility.name}
-  //           {facility.closed_for_maintenance ? "(Closed for maintenance)" : ""}
-  //         </option>
-  //       ))}
-  //     </select>
-  //   );
-  // };
 
   const handleFacilitySelection = (event) => {
     const facilityId = event.target.value;
@@ -270,26 +235,36 @@ export default function NewBooking() {
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="property">Property and Unit</label>
-            {renderPropertyDropdown()}
-            {renderFacilityDropdown()}
+            <div>
+              {renderPropertyDropdown()}
+              {renderFacilityDropdown()}
+            </div>
           </div>
-          <input
-            type="datetime-local"
-            id="start_time"
-            name="start_time"
-            value={newBooking.start_time}
-            onChange={handleInputChange}
-          />
-
-          <input
-            type="datetime-local"
-            id="end_time"
-            name="end_time"
-            value={newBooking.end_time}
-            onChange={handleInputChange}
-          />
-
-          <button type="submit">Submit</button>
+          <div>
+            <label htmlFor="start_time">Start Time</label>
+            <input
+              type="datetime-local"
+              id="start_time"
+              name="start_time"
+              value={newBooking.start_time}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="end_time">End Time</label>
+            <input
+              type="datetime-local"
+              id="end_time"
+              name="end_time"
+              value={newBooking.end_time}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <Button variant="success" type="submit">
+              Submit
+            </Button>
+          </div>
         </form>
       )}
     </div>

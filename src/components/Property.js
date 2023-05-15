@@ -35,39 +35,31 @@ export default function Property() {
     closed_for_maintenance: false,
   });
 
-  // useEffect(() => {
-  //   console.log(selectedFacility);
-  // }, [selectedFacility]);
+  // const handleChange = (e) => {
+  //   const { name, value, type, checked } = e.target;
+  //   const newValue = type === "checkbox" ? checked : value;
+  //   setEditFacility((prevEditFacility) => ({
+  //     ...prevEditFacility,
+  //     [name]: newValue,
+  //   }));
+  // };
 
-  // useEffect(() => {
-  //   console.log(editFacility);
-  // }, [editFacility]);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const newValue = type === "checkbox" ? checked : value;
-    setEditFacility((prevEditFacility) => ({
-      ...prevEditFacility,
-      [name]: newValue,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await updateFacility(selectedFacility.id, editFacility);
-      setSelectedFacility(null);
-      setEditFacility({
-        start_time: null,
-        end_time: null,
-        max_capacity: null,
-        booking_limit: null,
-        closed_for_maintenance: false,
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     await updateFacility(selectedFacility.id, editFacility);
+  //     setSelectedFacility(null);
+  //     setEditFacility({
+  //       start_time: null,
+  //       end_time: null,
+  //       max_capacity: null,
+  //       booking_limit: null,
+  //       closed_for_maintenance: false,
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const updateComment = (feedback) => {
     replyFeedback(
@@ -88,10 +80,6 @@ export default function Property() {
     setEditMode(false);
     setEditCommentId();
   };
-
-  // useEffect(() => {
-  //   console.log(feedbacks);
-  // }, [feedbacks]);
 
   const propertyStyle = (color) => ({
     display: "flex",
@@ -118,6 +106,16 @@ export default function Property() {
     slidesToScroll: 3,
   };
 
+  function textStyle(color) {
+    return {
+      fontSize: "14px",
+      fontWeight: "normal",
+      margin: "0",
+      backgroundColor: color,
+      padding: "5px",
+    };
+  }
+
   const handlePropertyClick = (propertyId) => {
     setSelectedPropertyId(propertyId);
   };
@@ -135,20 +133,6 @@ export default function Property() {
   const selectedProperty = properties.find(
     (property) => property.id === selectedPropertyId
   );
-
-  function textStyle(color) {
-    return {
-      fontSize: "14px",
-      fontWeight: "normal",
-      margin: "0",
-      backgroundColor: color,
-      padding: "5px",
-    };
-  }
-
-  // useEffect(() => {
-  //   console.log(managementFeedback);
-  // }, [managementFeedback]);
 
   const filteredFacilities =
     selectedPropertyId !== null
@@ -184,7 +168,10 @@ export default function Property() {
       </Slider>
 
       {selectedProperty && (
-        <div className="property-header">
+        <div
+          className="property-header"
+          style={{ backgroundColor: selectedProperty.color }}
+        >
           <h3>{selectedProperty.name}</h3>
         </div>
       )}
@@ -224,7 +211,7 @@ export default function Property() {
         ))}
       </div>
 
-      {selectedFacility && (
+      {/* {selectedFacility && (
         <form
           className="form-container"
           style={{ width: "50%", margin: "auto" }}
@@ -302,7 +289,7 @@ export default function Property() {
             Save
           </button>
         </form>
-      )}
+      )} */}
 
       {selectedPropertyId !== null && (
         <table className="my-table">
@@ -326,6 +313,12 @@ export default function Property() {
                   (feedback) => feedback.property_id === selectedPropertyId
                 )
                 .map((feedback) => {
+                  // determine whether the feedback is completed
+                  const isCompleted = feedback.completed;
+
+                  // define a class for the row based on whether the feedback is completed or not
+                  const rowClass = isCompleted ? "completed-row" : "";
+
                   const facility = facilities.find(
                     (f) => f.id === feedback.facility_id
                   );
@@ -335,7 +328,7 @@ export default function Property() {
                   const user = users.find((u) => u.id === feedback.user_id);
 
                   return (
-                    <tr key={feedback.id}>
+                    <tr key={feedback.id} className={rowClass}>
                       <td>{facility ? facility.name : ""}</td>
                       <td>{userProperty ? userProperty.unit_no : ""}</td>
                       <td>

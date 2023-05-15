@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
+import RequestLinking from "./RequestLinking";
 import "./UserManagement.css";
 
 export default function UserManagement() {
@@ -128,6 +129,7 @@ export default function UserManagement() {
           </label>
           <button type="submit">Add User Property</button>
         </form>
+        <RequestLinking />
         <table className="my-table">
           <thead>
             <tr>

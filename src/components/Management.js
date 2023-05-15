@@ -32,7 +32,6 @@ export default function Management() {
     <div>
       {loggedInUser && loggedInUser.id === 1 ? (
         <div>
-          <h2>Welcome!</h2>
           <ul className="nav nav-tabs">
             <li
               className={`nav-item ${
@@ -41,7 +40,7 @@ export default function Management() {
               onClick={() => setActiveTab("properties")}
             >
               <a className="nav-link" href="#">
-                Properties
+                Feedback
               </a>
             </li>
             <li
@@ -69,7 +68,7 @@ export default function Management() {
               onClick={() => setActiveTab("newProperties")}
             >
               <a className="nav-link" href="#">
-                New Properties
+                Manage Properties
               </a>
             </li>
             <li
@@ -79,7 +78,7 @@ export default function Management() {
               onClick={() => setActiveTab("newFacilities")}
             >
               <a className="nav-link" href="#">
-                New Facilities
+                Manage Facilities
               </a>
             </li>
           </ul>

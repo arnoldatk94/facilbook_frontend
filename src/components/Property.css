@@ -13,7 +13,6 @@
   justify-content: center;
   align-items: center;
   height: 90px;
-  background-color: #fff;
   border-bottom: 1px solid #ccc;
   font-size: 1.5rem;
   font-weight: bold;
@@ -145,4 +144,8 @@
 
 .form-button:disabled:hover {
   background-color: #ccc;
+}
+
+.completed-row {
+  background-color: #90ee90;
 }

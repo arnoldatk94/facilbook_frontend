@@ -7,7 +7,6 @@ import { PrimaryContext } from "../context/PrimaryContext";
 
 import "./ResidentProperty.css";
 import moment from "moment";
-import { Button } from "react-bootstrap";
 
 export default function ResidentProperty() {
   const {
@@ -259,6 +258,11 @@ export default function ResidentProperty() {
                   (feedback) => feedback.property_id === selectedPropertyId
                 )
                 .map((feedback) => {
+                  // determine whether the feedback is completed
+                  const isCompleted = feedback.completed;
+
+                  // define a class for the row based on whether the feedback is completed or not
+                  const rowClass = isCompleted ? "completed-row" : "";
                   const facility = facilities.find(
                     (f) => f.id === feedback.facility_id
                   );
@@ -268,7 +272,7 @@ export default function ResidentProperty() {
                   const user = users.find((u) => u.id === feedback.user_id);
 
                   return (
-                    <tr key={feedback.id}>
+                    <tr key={feedback.id} className={rowClass}>
                       <td>{facility ? facility.name : ""}</td>
                       <td>{userProperty ? userProperty.unit_no : ""}</td>
                       <td>

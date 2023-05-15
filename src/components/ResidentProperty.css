@@ -109,3 +109,7 @@ textarea {
 select {
   height: 40px;
 }
+
+.completed-row {
+  background-color: #90ee90;
+}
