@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { PrimaryContext } from "../context/PrimaryContext";
 import "./User.css";
 
@@ -26,9 +27,9 @@ export default function User() {
     phone: "",
   });
 
-  useEffect(() => {
-    console.log(updatedUser);
-  }, [updatedUser]);
+  // useEffect(() => {
+  //   console.log(updatedUser);
+  // }, [updatedUser]);
   const filteredUsers = users.filter((user) => {
     return (
       user.first_name
@@ -75,8 +76,14 @@ export default function User() {
 
   const handleEditSubmit = (e) => {
     const phoneRegex = /^\d{8,}$/;
-    if (!phoneRegex.test(updatedUser.phone)) {
-      alert("Please enter a valid phone number with at least 8 digits.");
+    // if (!phoneRegex.test(updatedUser.phone)) {
+    //   alert("Please enter a valid phone number with at least 8 digits.");
+    //   return;
+    // }
+    if (updatedUser.phone && !phoneRegex.test(updatedUser.phone)) {
+      alert(
+        "Please enter a valid phone number with at least 8 digits, or leave it black if you aren't changing the number."
+      );
       return;
     }
     editManagementUserData(e.id, updatedUser);
@@ -139,9 +146,9 @@ export default function User() {
             required
           />
         </div>
-        <button type="submit" className="my-button">
+        <Button type="submit" className="my-Button">
           Add User
-        </button>
+        </Button>
       </form>
       <table className="my-table">
         <thead>
@@ -255,13 +262,18 @@ export default function User() {
               <td>
                 {editingId === user.id ? (
                   <>
-                    <button onClick={handleCancelClick}>Cancel</button>
-                    <button onClick={() => handleEditSubmit(user)}>
+                    <Button variant="danger" onClick={handleCancelClick}>
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="success"
+                      onClick={() => handleEditSubmit(user)}
+                    >
                       Submit
-                    </button>
+                    </Button>
                   </>
                 ) : (
-                  <button onClick={() => handleEditClick(user.id)}>Edit</button>
+                  <Button onClick={() => handleEditClick(user.id)}>Edit</Button>
                 )}
               </td>
             </tr>

@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { Button } from "react-bootstrap";
 
 export default function EditProperties() {
   const { properties, updateProperties } = useContext(PrimaryContext);
@@ -171,19 +172,22 @@ export default function EditProperties() {
                 <td>
                   {editing === property.id ? (
                     <>
-                      <button onClick={handleCancelClick}>Cancel</button>
-                      <button
+                      <Button variant="danger" onClick={handleCancelClick}>
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="success"
                         onClick={() => {
                           handleSaveClick(property.id);
                         }}
                       >
                         Save
-                      </button>
+                      </Button>
                     </>
                   ) : (
-                    <button onClick={() => handleEditClick(property)}>
+                    <Button onClick={() => handleEditClick(property)}>
                       Edit
-                    </button>
+                    </Button>
                   )}
                 </td>
               </tr>

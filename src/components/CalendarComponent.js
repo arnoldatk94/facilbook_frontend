@@ -12,8 +12,15 @@ import { Button } from "react-bootstrap";
 const localizer = momentLocalizer(moment);
 
 export default function CalendarComponent() {
-  const { users, properties, usersProperties, facilities, bookings } =
-    useContext(PrimaryContext);
+  const {
+    users,
+    properties,
+    usersProperties,
+    facilities,
+    bookings,
+    loggedInUser,
+    loggedInUsersProperties,
+  } = useContext(PrimaryContext);
   const [localBookings, setLocalBookings] = useState([]);
   // States to select events
   const [selectedProperty, setSelectedProperty] = useState("");
@@ -111,33 +118,72 @@ export default function CalendarComponent() {
           (booking) => booking.property === selectedProperty
         );
 
+  useEffect(() => {
+    console.log(loggedInUsersProperties);
+  }, [loggedInUsersProperties]);
+
+  const filteredProperties = properties.filter((property) =>
+    loggedInUsersProperties?.some(
+      (userProperty) => userProperty.property_id === property?.id
+    )
+  );
+
   return (
     <div>
       {/* Dropdown filter */}
-      <div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          <label htmlFor="property-filter">Filter by property:</label>
-          <select
-            id="property-filter"
-            name="property-filter"
-            value={selectedProperty}
-            onChange={handlePropertyChange}
+      {/* <div>
+        {loggedInUser ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+            }}
           >
-            <option value="">All</option>
-            {properties.map((property) => (
-              <option key={property.id} value={property.name}>
-                {property.name}
-              </option>
-            ))}
-          </select>
-        </div>
+            <label htmlFor="property-filter">Filter by property:</label>
+            <select
+              id="property-filter"
+              name="property-filter"
+              value={selectedProperty}
+              onChange={handlePropertyChange}
+            >
+              <option value="">All</option>
+              {properties.map((property) => (
+                <option key={property.id} value={property.name}>
+                  {property.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+      </div> */}
+      <div>
+        {loggedInUser ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
+            <label htmlFor="property-filter">Filter by property:</label>
+            <select
+              id="property-filter"
+              name="property-filter"
+              value={selectedProperty}
+              onChange={handlePropertyChange}
+            >
+              <option value="">All</option>
+              {filteredProperties.map((property) => (
+                <option key={property.id} value={property.name}>
+                  {property.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
       </div>
 
       <NewBooking />

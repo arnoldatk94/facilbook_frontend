@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-// import "./Bookings.css";
+import { Button } from "react-bootstrap";
+import "./Bookings.css";
 
 import { PrimaryContext } from "../context/PrimaryContext";
 
@@ -142,7 +143,7 @@ export default function Bookings() {
     }
   };
 
-  return (
+  return loggedInUser ? (
     <div>
       <div>
         <table className="my-table">
@@ -226,13 +227,22 @@ export default function Bookings() {
                 </td>
 
                 <td>
-                  <button onClick={() => handleDelete(booking)}>Delete</button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(booking)}
+                  >
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+    </div>
+  ) : (
+    <div>
+      <p>Please log in</p>
     </div>
   );
 }

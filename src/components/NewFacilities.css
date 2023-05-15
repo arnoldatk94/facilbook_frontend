@@ -5,13 +5,15 @@
 }
 
 .form-table td {
-  padding: 10px;
+  padding: 0px;
 }
 
 .form-table td label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  text-align: left;
+  padding-right: 10px;
 }
 
 .form-table td input[type="text"],

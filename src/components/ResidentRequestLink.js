@@ -1,6 +1,7 @@
 import "./ResidentRequestLink.css";
 import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
+import { Button } from "react-bootstrap";
 
 export default function ResidentRequestLink() {
   const {
@@ -25,9 +26,9 @@ export default function ResidentRequestLink() {
     }
   }, [loggedInUser]);
 
-  const filteredRequests = linkRequests.filter(
-    (request) => request.user_id === loggedInUser.id
-  );
+  const filteredRequests =
+    linkRequests &&
+    linkRequests.filter((request) => request.user_id === loggedInUser?.id);
 
   const handleDeleteClick = (id) => {
     const shouldDelete = window.confirm(
@@ -67,16 +68,15 @@ export default function ResidentRequestLink() {
     }));
   };
 
-  useEffect(() => {
-    console.log(linkRequests);
-  }, [linkRequests]);
+  // useEffect(() => {
+  //   console.log(linkRequests);
+  // }, [linkRequests]);
   return (
     <div>
-      <h2>Resident Request Link Form</h2>
+      <h3>Add Property/ Unit to profile</h3>
       <form onSubmit={handleSubmit}>
         <div>
           <label>
-            Select Property:
             <select id="property-select" onChange={handlePropertyChange}>
               <option value="">--Please select a property--</option>
               {properties.map((property) => (
@@ -99,7 +99,7 @@ export default function ResidentRequestLink() {
             />
           </label>
         </div>
-        <button type="submit">Submit</button>
+        <Button type="submit">Submit</Button>
       </form>
 
       <table className="my-requests">
@@ -107,6 +107,7 @@ export default function ResidentRequestLink() {
           <tr>
             <th>Property</th>
             <th>Unit No.</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -121,16 +122,17 @@ export default function ResidentRequestLink() {
                   }
                 </td>
                 <td>{request.unit_no}</td>
+                <td>{request.request_status}</td>
                 <td style={{ textAlign: "left" }}>
-                  <button onClick={() => handleDeleteClick(request.id)}>
+                  <Button onClick={() => handleDeleteClick(request.id)}>
                     Delete
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="3">No pending requests</td>
+              <td colSpan="4">No pending requests</td>
             </tr>
           )}
         </tbody>

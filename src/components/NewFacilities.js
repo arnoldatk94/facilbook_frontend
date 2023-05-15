@@ -131,7 +131,7 @@ export default function NewFacilities() {
           <tbody>
             <tr>
               <td>
-                <label htmlFor="property">Property</label>
+                <label htmlFor="property">Property:</label>
               </td>
               <td>
                 <select
@@ -150,7 +150,7 @@ export default function NewFacilities() {
             </tr>
             <tr>
               <td>
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">Name:</label>
               </td>
               <td>
                 <input
@@ -163,7 +163,7 @@ export default function NewFacilities() {
             </tr>
             <tr>
               <td>
-                <label htmlFor="maxCapacity">Max Capacity</label>
+                <label htmlFor="maxCapacity">Max Capacity:</label>
               </td>
               <td>
                 <input
@@ -176,7 +176,7 @@ export default function NewFacilities() {
             </tr>
             <tr>
               <td>
-                <label htmlFor="bookingLimit">Booking Limit</label>
+                <label htmlFor="bookingLimit">Booking Limit:</label>
               </td>
               <td>
                 <input
@@ -189,7 +189,7 @@ export default function NewFacilities() {
             </tr>
             <tr>
               <td>
-                <label htmlFor="startTime">Start Time</label>
+                <label htmlFor="startTime">Start Time:</label>
               </td>
               <td>
                 <input
@@ -202,7 +202,7 @@ export default function NewFacilities() {
             </tr>
             <tr>
               <td>
-                <label htmlFor="endTime">End Time</label>
+                <label htmlFor="endTime">End Time:</label>
               </td>
               <td>
                 <input
@@ -215,7 +215,7 @@ export default function NewFacilities() {
             </tr>
             <tr>
               <td>
-                <label htmlFor="photo">Photo</label>
+                <label htmlFor="photo">Photo:</label>
               </td>
               <td>
                 <input
@@ -229,7 +229,7 @@ export default function NewFacilities() {
             <tr>
               <td></td>
               <td>
-                <button type="submit">Submit</button>
+                <button type="submit">Submit:</button>
               </td>
             </tr>
           </tbody>
@@ -291,81 +291,113 @@ export default function NewFacilities() {
           onSubmit={handleEditSubmit}
         >
           <p className="form-header">{selectedFacility.name}</p>
-          <div className="form-input">
-            <label className="form-label" htmlFor="start_time">
-              Start Time:
-            </label>
-            <input
-              className="form-field"
-              type="time"
-              id="start_time"
-              name="start_time"
-              value={editFacility.start_time || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <label className="form-label" htmlFor="end_time">
-              End Time:
-            </label>
-            <input
-              className="form-field"
-              type="time"
-              id="end_time"
-              name="end_time"
-              value={editFacility.end_time || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <label className="form-label" htmlFor="max_capacity">
-              Max Capacity:
-            </label>
-            <input
-              className="form-field"
-              type="number"
-              id="max_capacity"
-              name="max_capacity"
-              value={editFacility.max_capacity || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <label className="form-label" htmlFor="booking_limit">
-              Booking Limit:
-            </label>
-            <input
-              className="form-field"
-              type="number"
-              id="booking_limit"
-              name="booking_limit"
-              value={editFacility.booking_limit || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <label className="form-label" htmlFor="closed_for_maintenance">
-              Closed for Maintenance:
-            </label>
-            <div className="form-checkbox">
-              <input
-                type="checkbox"
-                id="closed_for_maintenance"
-                name="closed_for_maintenance"
-                checked={editFacility.closed_for_maintenance}
-                onChange={handleChange}
-              />
-              <label htmlFor="closed_for_maintenance">Yes</label>
-            </div>
-          </div>
-          <button
-            className="form-button"
-            onClick={() => {
-              console.log(editFacility);
-            }}
-          >
-            Save
-          </button>
+          <table className="form-table">
+            <tbody>
+              <tr>
+                <td>
+                  <label className="form-label" htmlFor="start_time">
+                    Start Time:
+                  </label>
+                </td>
+                <td>
+                  <input
+                    className="form-field"
+                    type="time"
+                    id="start_time"
+                    name="start_time"
+                    value={editFacility.start_time || ""}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label className="form-label" htmlFor="end_time">
+                    End Time:
+                  </label>
+                </td>
+                <td>
+                  <input
+                    className="form-field"
+                    type="time"
+                    id="end_time"
+                    name="end_time"
+                    placeholder="End Time"
+                    value={editFacility.end_time || ""}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label className="form-label" htmlFor="max_capacity">
+                    Max Capacity:
+                  </label>
+                </td>
+                <td>
+                  <input
+                    className="form-field"
+                    type="number"
+                    id="max_capacity"
+                    name="max_capacity"
+                    value={editFacility.max_capacity || ""}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label className="form-label" htmlFor="booking_limit">
+                    Booking Limit:
+                  </label>
+                </td>
+                <td>
+                  <input
+                    className="form-field"
+                    type="number"
+                    id="booking_limit"
+                    name="booking_limit"
+                    value={editFacility.booking_limit || ""}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label
+                    className="form-label"
+                    htmlFor="closed_for_maintenance"
+                  >
+                    Closed for Maintenance:
+                  </label>
+                </td>
+                <td>
+                  <div className="form-checkbox">
+                    <input
+                      type="checkbox"
+                      id="closed_for_maintenance"
+                      name="closed_for_maintenance"
+                      checked={editFacility.closed_for_maintenance}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <button
+                    className="form-button"
+                    onClick={() => {
+                      console.log(editFacility);
+                    }}
+                  >
+                    Save
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </form>
       )}
     </div>

@@ -2,6 +2,7 @@ import "./Home.css";
 import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import ResidentRequestLink from "./ResidentRequestLink";
+import { Button } from "react-bootstrap";
 
 export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
@@ -49,7 +50,7 @@ export default function Home() {
     return map;
   }, {});
 
-  return (
+  return loggedInUser ? (
     <div>
       <div>
         <table className="my-table">
@@ -87,11 +88,15 @@ export default function Home() {
               </td>
               <td>
                 {!isEditing ? (
-                  <button onClick={handleEditClick}>Edit</button>
+                  <Button onClick={handleEditClick}>Edit</Button>
                 ) : (
                   <>
-                    <button onClick={handleCancelClick}>Cancel</button>
-                    <button onClick={handleSubmit}>Submit</button>
+                    <Button variant="danger" onClick={handleCancelClick}>
+                      Cancel
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit}>
+                      Submit
+                    </Button>
                   </>
                 )}
               </td>
@@ -118,6 +123,10 @@ export default function Home() {
         </tbody>
       </table>
       <ResidentRequestLink />
+    </div>
+  ) : (
+    <div>
+      <p>Please log in</p>
     </div>
   );
 }

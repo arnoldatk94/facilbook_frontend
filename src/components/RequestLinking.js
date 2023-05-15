@@ -2,6 +2,7 @@ import "./RequestLinking.css";
 
 import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
+import { Button } from "react-bootstrap";
 
 export default function RequestLinking() {
   const {
@@ -76,7 +77,7 @@ export default function RequestLinking() {
   );
 
   const handleEditClick = (id) => {
-    // handle edit button click
+    // handle edit Button click
     setEditting(id);
   };
 
@@ -118,7 +119,9 @@ export default function RequestLinking() {
               />
             </th>
             <th>
-              <button onClick={handleClearFilters}>Clear Filters</button>
+              <Button variant="secondary" onClick={handleClearFilters}>
+                Clear
+              </Button>
             </th>
             <th>Clear Completed request?</th>
           </tr>
@@ -155,24 +158,30 @@ export default function RequestLinking() {
               <td>
                 {editting && editting.id === request.id ? (
                   <>
-                    <button onClick={() => handleSaveClick(request)}>
+                    <Button
+                      variant="success"
+                      onClick={() => handleSaveClick(request)}
+                    >
                       Save
-                    </button>
-                    <button onClick={handleCancelClick}>Cancel</button>
+                    </Button>
+                    <Button variant="danger" onClick={handleCancelClick}>
+                      Cancel
+                    </Button>
                   </>
                 ) : (
-                  <button onClick={() => handleEditClick(request)}>Edit</button>
+                  <Button onClick={() => handleEditClick(request)}>Edit</Button>
                 )}
               </td>
               <td>
-                {request.request_status === "Completed" ? (
-                  <button
+                {request.request_status === "Completed" ||
+                request.request_status === "Denied" ? (
+                  <Button
                     onClick={() => {
                       handleClearClick(request);
                     }}
                   >
                     Clear
-                  </button>
+                  </Button>
                 ) : null}
               </td>
             </tr>

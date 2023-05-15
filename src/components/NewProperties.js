@@ -103,11 +103,17 @@ export default function NewProperties() {
                 <label htmlFor="color">Color:</label>
               </td>
               <td>
-                <input
+                {/* <input
                   type="color"
                   id="color"
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
+                /> */}
+                <input
+                  type="color"
+                  id="color"
+                  value={`#${color}`}
+                  onChange={(e) => setColor(e.target.value.replace("#", ""))}
                 />
               </td>
             </tr>

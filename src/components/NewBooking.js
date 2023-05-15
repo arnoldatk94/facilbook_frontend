@@ -9,8 +9,8 @@ export default function NewBooking() {
     facility_id: "",
     user_id: "",
     user_property_id: "",
-    start_time: "2023-05-13T14:00",
-    end_time: "2023-05-13T17:00",
+    start_time: "",
+    end_time: "",
   });
   const {
     properties,
@@ -22,9 +22,9 @@ export default function NewBooking() {
   } = useContext(PrimaryContext);
   const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    console.log(newBooking);
-  }, [newBooking]);
+  // useEffect(() => {
+  //   console.log(newBooking);
+  // }, [newBooking]);
 
   // To use form
   const handleInputChange = (event) => {
@@ -33,9 +33,9 @@ export default function NewBooking() {
     setNewBooking({ ...newBooking, [name]: value });
   };
 
-  useEffect(() => {
-    console.log(loggedInUser);
-  }, [loggedInUser]);
+  // useEffect(() => {
+  //   console.log(loggedInUser);
+  // }, [loggedInUser]);
 
   // Submit form
   const handleSubmit = (e) => {
@@ -145,9 +145,9 @@ export default function NewBooking() {
   }, [loggedInUser]);
 
   // Check facilities
-  useEffect(() => {
-    console.log(facilities);
-  }, [facilities]);
+  // useEffect(() => {
+  //   console.log(facilities);
+  // }, [facilities]);
 
   // Function to handle property selection
   const handlePropertySelection = (event) => {

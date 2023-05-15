@@ -1,20 +1,37 @@
 .nav-tabs {
   border-bottom: 1px solid #dee2e6;
   margin-bottom: 1rem;
+  display: flex;
   justify-content: center;
+}
+
+.nav-item {
+  margin-right: 20px;
 }
 
 .nav-link {
   border: 1px solid transparent;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
+  font-size: 18px;
+  color: #666;
 }
 
 .nav-link:hover {
+  color: #333;
   border-color: #e9ecef #e9ecef #dee2e6;
 }
 
 .nav-link.active {
   background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+  color: #333;
+}
+
+.nav-tabs .nav-link {
+  color: #333;
+}
+
+.nav-item.active .nav-link {
   border-color: #dee2e6 #dee2e6 #fff;
 }

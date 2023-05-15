@@ -14,9 +14,9 @@ export const PrimaryContextProvider = ({ children }) => {
   const [bookings, setBookings] = useState([]);
   const [linkRequests, setLinkRequests] = useState([]);
 
-  useEffect(() => {
-    console.log(linkRequests);
-  }, [linkRequests]);
+  // useEffect(() => {
+  //   console.log(linkRequests);
+  // }, [linkRequests]);
 
   // Auth0 Login and linking to backend
   const { getAccessTokenSilently, isAuthenticated, user } = useAuth0();
@@ -193,13 +193,14 @@ export const PrimaryContextProvider = ({ children }) => {
   };
 
   const editManagementUserData = async (id, updatedUser) => {
+    console.log(updatedUser);
     try {
       const response = await axios.put(`${BACKEND_URL}/users/${id}`, {
         first_name: updatedUser.first_name,
         last_name: updatedUser.last_name,
-        phone: parseInt(updatedUser.phone) || null,
+        phone: parseInt(updatedUser.phone) || "",
       });
-      console.log("updated user", response.data);
+      // console.log("updated user", response.data);
       setUsers(response.data);
     } catch (error) {
       console.log(error.response.data);

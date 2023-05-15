@@ -26,40 +26,6 @@ export default function Property() {
     reply: "",
     completed: false,
   });
-  const [selectedFacility, setSelectedFacility] = useState(null);
-  const [editFacility, setEditFacility] = useState({
-    start_time: null,
-    end_time: null,
-    max_capacity: null,
-    booking_limit: null,
-    closed_for_maintenance: false,
-  });
-
-  // const handleChange = (e) => {
-  //   const { name, value, type, checked } = e.target;
-  //   const newValue = type === "checkbox" ? checked : value;
-  //   setEditFacility((prevEditFacility) => ({
-  //     ...prevEditFacility,
-  //     [name]: newValue,
-  //   }));
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     await updateFacility(selectedFacility.id, editFacility);
-  //     setSelectedFacility(null);
-  //     setEditFacility({
-  //       start_time: null,
-  //       end_time: null,
-  //       max_capacity: null,
-  //       booking_limit: null,
-  //       closed_for_maintenance: false,
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   const updateComment = (feedback) => {
     replyFeedback(
@@ -79,6 +45,7 @@ export default function Property() {
   const turnOffEdit = () => {
     setEditMode(false);
     setEditCommentId();
+    setManagementFeedback({ reply: "", completed: false });
   };
 
   const propertyStyle = (color) => ({
@@ -118,16 +85,6 @@ export default function Property() {
 
   const handlePropertyClick = (propertyId) => {
     setSelectedPropertyId(propertyId);
-  };
-
-  const handleFacilityClick = (facility) => {
-    setSelectedFacility((prevFacility) => {
-      if (prevFacility === facility) {
-        return null; // set to null if already selected
-      } else {
-        return facility; // set to new facility
-      }
-    });
   };
 
   const selectedProperty = properties.find(
@@ -178,13 +135,7 @@ export default function Property() {
 
       <div className="facilities-container">
         {[...filteredFacilities].map((facility) => (
-          <div
-            key={facility.id}
-            className="facility"
-            onClick={() => {
-              handleFacilityClick(facility);
-            }}
-          >
+          <div key={facility.id} className="facility">
             <img
               src={facility.photoUrl}
               alt={facility.name}
@@ -210,86 +161,6 @@ export default function Property() {
           </div>
         ))}
       </div>
-
-      {/* {selectedFacility && (
-        <form
-          className="form-container"
-          style={{ width: "50%", margin: "auto" }}
-          onSubmit={handleSubmit}
-        >
-          <p className="form-header">{selectedFacility.name}</p>
-          <div className="form-input">
-            <label className="form-label" htmlFor="start_time">
-              Start Time:
-            </label>
-            <input
-              className="form-field"
-              type="time"
-              id="start_time"
-              name="start_time"
-              value={editFacility.start_time || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <label className="form-label" htmlFor="end_time">
-              End Time:
-            </label>
-            <input
-              className="form-field"
-              type="time"
-              id="end_time"
-              name="end_time"
-              value={editFacility.end_time || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <label className="form-label" htmlFor="max_capacity">
-              Max Capacity:
-            </label>
-            <input
-              className="form-field"
-              type="number"
-              id="max_capacity"
-              name="max_capacity"
-              value={editFacility.max_capacity || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <label className="form-label" htmlFor="booking_limit">
-              Booking Limit:
-            </label>
-            <input
-              className="form-field"
-              type="number"
-              id="booking_limit"
-              name="booking_limit"
-              value={editFacility.booking_limit || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <label className="form-label" htmlFor="closed_for_maintenance">
-              Closed for Maintenance:
-            </label>
-            <div className="form-checkbox">
-              <input
-                type="checkbox"
-                id="closed_for_maintenance"
-                name="closed_for_maintenance"
-                checked={editFacility.closed_for_maintenance}
-                onChange={handleChange}
-              />
-              <label htmlFor="closed_for_maintenance">Yes</label>
-            </div>
-          </div>
-          <button className="form-button" type="submit">
-            Save
-          </button>
-        </form>
-      )} */}
 
       {selectedPropertyId !== null && (
         <table className="my-table">
@@ -357,10 +228,13 @@ export default function Property() {
                         )}
                       </td>
                       <td>
-                        {moment(feedback.updatedAt)
-                          .tz("Asia/Singapore")
-                          .format("DD-MMM-YYYY h:mm a")}
+                        {feedback.reply !== "" && feedback.reply !== null
+                          ? moment(feedback.updatedAt)
+                              .tz("Asia/Singapore")
+                              .format("DD-MMM-YYYY h:mm a")
+                          : null}
                       </td>
+
                       <td>
                         {editCommentId === feedback.id ? (
                           <div>
