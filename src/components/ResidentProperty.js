@@ -33,10 +33,6 @@ export default function ResidentProperty() {
   });
 
   useEffect(() => {
-    console.log(selectedFacilityId);
-  }, [selectedFacilityId]);
-
-  useEffect(() => {
     if (loggedInUser !== null) {
       setNewFeedback((prevFeedback) => ({
         ...prevFeedback,

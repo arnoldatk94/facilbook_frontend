@@ -117,10 +117,6 @@ export default function CalendarComponent() {
           (booking) => booking.property === selectedProperty
         );
 
-  useEffect(() => {
-    console.log(loggedInUsersProperties);
-  }, [loggedInUsersProperties]);
-
   const filteredProperties = properties.filter((property) =>
     loggedInUsersProperties?.some(
       (userProperty) => userProperty.property_id === property?.id
