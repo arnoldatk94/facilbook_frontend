@@ -149,3 +149,58 @@
 .completed-row {
   background-color: #90ee90;
 }
+
+.property input[type="radio"] {
+  margin-right: 10px;
+}
+
+.property label {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.radio-buttons-container {
+  display: flex;
+  align-items: center;
+}
+
+.my-feedback {
+  border-collapse: collapse;
+  border: 1px solid #dddddd;
+  width: 100%;
+  margin-top: 20px;
+  background: #ffffff;
+  background: linear-gradient(to bottom, #ffffff, #f2f2f2);
+}
+
+.my-feedback thead {
+  background-color: #f1f1f1;
+}
+
+.my-feedback th {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  padding: 12px 15px;
+  color: #333333;
+  border: 1px solid #dddddd;
+}
+
+.my-feedback td {
+  font-size: 14px;
+  padding: 10px 15px;
+  color: #555555;
+  border: 1px solid #dddddd;
+}
+
+.my-feedback tr {
+  transition: background-color 0.3s ease;
+}
+
+.my-feedback tr:hover {
+  background-color: #f5f5f5;
+}
+.my-feedback td button {
+  flex: 1;
+}

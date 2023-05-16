@@ -24,11 +24,15 @@
 }
 
 .my-table th button {
-  display: block;
+  display: inline;
   margin: 8px auto;
 }
 
 .my-table td button {
-  display: block;
+  display: inline;
   margin: 0 auto;
+}
+
+.center-text {
+  text-align: center;
 }

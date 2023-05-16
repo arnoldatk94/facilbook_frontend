@@ -7,7 +7,6 @@ import "moment/locale/en-sg";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import NewBooking from "./NewBooking";
-import { Button } from "react-bootstrap";
 
 const localizer = momentLocalizer(moment);
 
@@ -131,33 +130,6 @@ export default function CalendarComponent() {
   return (
     <div>
       {/* Dropdown filter */}
-      {/* <div>
-        {loggedInUser ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-            }}
-          >
-            <label htmlFor="property-filter">Filter by property:</label>
-            <select
-              id="property-filter"
-              name="property-filter"
-              value={selectedProperty}
-              onChange={handlePropertyChange}
-            >
-              <option value="">All</option>
-              {properties.map((property) => (
-                <option key={property.id} value={property.name}>
-                  {property.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : null}
-      </div> */}
       <div>
         {loggedInUser ? (
           <div

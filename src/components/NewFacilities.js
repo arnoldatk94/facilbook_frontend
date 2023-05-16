@@ -1,6 +1,6 @@
 import "./NewFacilities.css";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -121,9 +121,6 @@ export default function NewFacilities() {
     }
   };
 
-  useEffect(() => {
-    console.log(facilities);
-  }, [facilities]);
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ margin: "auto" }}>
@@ -237,7 +234,15 @@ export default function NewFacilities() {
       </form>
 
       {previewUrl && (
-        <img src={previewUrl} alt="Preview" style={{ maxWidth: "400px" }} />
+        <img
+          src={previewUrl}
+          alt="Preview"
+          style={{
+            maxWidth: "200px",
+            maxHeight: "200px",
+            border: "2px solid black",
+          }}
+        />
       )}
 
       <div className="card-container">
@@ -252,6 +257,11 @@ export default function NewFacilities() {
                 <div
                   key={facility.id}
                   className="card"
+                  style={
+                    facility.id === selectedFacility?.id
+                      ? { border: "2px solid black" }
+                      : {}
+                  }
                   onClick={() => {
                     setSelectedFacility(facility);
                   }}
@@ -386,14 +396,7 @@ export default function NewFacilities() {
               <tr>
                 <td></td>
                 <td>
-                  <button
-                    className="form-button"
-                    onClick={() => {
-                      console.log(editFacility);
-                    }}
-                  >
-                    Save
-                  </button>
+                  <button className="form-button">Save</button>
                 </td>
               </tr>
             </tbody>

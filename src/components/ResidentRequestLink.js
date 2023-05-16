@@ -56,6 +56,11 @@ export default function ResidentRequestLink() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!newRequest.property_id) {
+      alert("Please select a property");
+      return;
+    }
+
     if (!newRequest.unit_no) {
       alert("Please enter a unit number");
       return;
@@ -73,7 +78,7 @@ export default function ResidentRequestLink() {
   // }, [linkRequests]);
   return (
     <div>
-      <h3>Add Property/ Unit to profile</h3>
+      <h4>Add Property/ Unit to profile</h4>
       <form onSubmit={handleSubmit}>
         <div>
           <label>

@@ -1,3 +1,4 @@
+import "./NewBooking.css";
 import React, { useContext, useEffect, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import moment from "moment";
@@ -22,10 +23,6 @@ export default function NewBooking() {
   } = useContext(PrimaryContext);
   const [showPopup, setShowPopup] = useState(false);
 
-  // useEffect(() => {
-  //   console.log(newBooking);
-  // }, [newBooking]);
-
   // To use form
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -33,10 +30,14 @@ export default function NewBooking() {
     setNewBooking({ ...newBooking, [name]: value });
   };
 
-  // useEffect(() => {
-  //   console.log(loggedInUser);
-  // }, [loggedInUser]);
-
+  const formatTime = (timeString) => {
+    const date = new Date(`1970-01-01T${timeString}`);
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
   // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -89,7 +90,9 @@ export default function NewBooking() {
     ) {
       // Display an error message to the user
       alert(
-        `Facility can only be booked between ${selectedFacility.start_time} and ${selectedFacility.end_time}.`
+        `Facility can only be booked between ${formatTime(
+          selectedFacility.start_time
+        )} and ${formatTime(selectedFacility.end_time)}.`
       );
     } else if (
       endMinute - startMinute + (endHour - startHour) * 60 >
@@ -130,24 +133,18 @@ export default function NewBooking() {
     }
   };
 
-  const addUserToBooking = () => {
-    if (loggedInUser !== null) {
-      setNewBooking((prevBooking) => {
-        return { ...prevBooking, user_id: loggedInUser.id };
-      });
-    }
-  };
-
   useEffect(() => {
+    const addUserToBooking = () => {
+      if (loggedInUser !== null) {
+        setNewBooking((prevBooking) => {
+          return { ...prevBooking, user_id: loggedInUser.id };
+        });
+      }
+    };
     if (loggedInUser !== null) {
       addUserToBooking();
     }
   }, [loggedInUser]);
-
-  // Check facilities
-  // useEffect(() => {
-  //   console.log(facilities);
-  // }, [facilities]);
 
   // Function to handle property selection
   const handlePropertySelection = (event) => {
@@ -218,9 +215,9 @@ export default function NewBooking() {
           ))}
         </select>
         {showPopup && selectedFacility && (
-          <div>
-            <p>Start Time: {selectedFacility.start_time}</p>
-            <p>End Time: {selectedFacility.end_time}</p>
+          <div className="booking-details">
+            <p>Start Time: {formatTime(selectedFacility.start_time)}</p>
+            <p>End Time: {formatTime(selectedFacility.end_time)}</p>
             <p>Booking Limit: {selectedFacility.booking_limit}</p>
             <p>Max Capacity: {selectedFacility.max_capacity}</p>
           </div>

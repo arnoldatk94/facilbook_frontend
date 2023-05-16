@@ -72,6 +72,32 @@ export const PrimaryContextProvider = ({ children }) => {
     }
   };
 
+  const replyFeedback = async (feedbackId, reply, completed) => {
+    try {
+      const response = await axios.put(
+        `${BACKEND_URL}/feedbacks/${feedbackId}`,
+        {
+          reply,
+          completed,
+        }
+      );
+      setFeedbacks(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const deleteFeedback = async (feedbackId) => {
+    try {
+      const response = await axios.delete(
+        `${BACKEND_URL}/feedbacks/${feedbackId}`
+      );
+      setFeedbacks(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const addFacility = async (newFacility) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/facilities`, {
@@ -102,21 +128,6 @@ export const PrimaryContextProvider = ({ children }) => {
         }
       );
       setFacilities(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const replyFeedback = async (feedbackId, reply, completed) => {
-    try {
-      const response = await axios.put(
-        `${BACKEND_URL}/feedbacks/${feedbackId}`,
-        {
-          reply,
-          completed,
-        }
-      );
-      setFeedbacks(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -215,7 +226,19 @@ export const PrimaryContextProvider = ({ children }) => {
         unit_no: formData.unitNo,
         is_management: formData.isManagement,
       });
-      console.log(response.data); // this logs the updated list of allUserProperties
+      // console.log(response.data); // this logs the updated list of allUserProperties
+      setUsersProperties(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const deleteUserProperty = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${BACKEND_URL}/users_properties/${id}`
+      );
+      // console.log(response.data); // this logs the updated list of allUserProperties
       setUsersProperties(response.data);
     } catch (err) {
       console.error(err);
@@ -287,6 +310,7 @@ export const PrimaryContextProvider = ({ children }) => {
       }
     };
     fetchData();
+    // eslint-disable-next-line
   }, [getAccessTokenSilently, isAuthenticated]);
 
   // Gett all and load first
@@ -354,6 +378,8 @@ export const PrimaryContextProvider = ({ children }) => {
     updateLinkRequest,
     deleteLinkRequest,
     addLinkRequest,
+    deleteFeedback,
+    deleteUserProperty,
   };
 
   return (

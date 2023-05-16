@@ -7,6 +7,7 @@ import { PrimaryContext } from "../context/PrimaryContext";
 
 import "./ResidentProperty.css";
 import moment from "moment";
+import { Button } from "react-bootstrap";
 
 export default function ResidentProperty() {
   const {
@@ -17,9 +18,11 @@ export default function ResidentProperty() {
     usersProperties,
     addFeedback,
     loggedInUser,
+    deleteFeedback,
   } = useContext(PrimaryContext);
   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   const [filteredProperties, setFilteredProperties] = useState([]);
+  const [selectedFacilityId, setSelectedFacilityId] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState("");
   const [newFeedback, setNewFeedback] = useState({
     facility_id: "",
@@ -30,6 +33,10 @@ export default function ResidentProperty() {
   });
 
   useEffect(() => {
+    console.log(selectedFacilityId);
+  }, [selectedFacilityId]);
+
+  useEffect(() => {
     if (loggedInUser !== null) {
       setNewFeedback((prevFeedback) => ({
         ...prevFeedback,
@@ -38,19 +45,19 @@ export default function ResidentProperty() {
     }
   }, [loggedInUser]);
 
-  const filterProperties = () => {
-    const filtered = properties.filter((property) =>
-      usersProperties.some(
-        (up) => up.property_id === property.id && up.user_id === loggedInUser.id
-      )
-    );
-    setFilteredProperties(filtered);
-  };
-
   // Call filterProperties when properties or loggedInUser changes
   useEffect(() => {
+    const filterProperties = () => {
+      const filtered = properties.filter((property) =>
+        usersProperties.some(
+          (up) =>
+            up.property_id === property.id && up.user_id === loggedInUser.id
+        )
+      );
+      setFilteredProperties(filtered);
+    };
     if (properties !== null && loggedInUser !== null) filterProperties();
-  }, [properties, loggedInUser]);
+  }, [properties, loggedInUser, usersProperties]);
 
   const propertyStyle = (color) => ({
     display: "flex",
@@ -77,7 +84,15 @@ export default function ResidentProperty() {
     slidesToScroll: 3,
   };
 
+  const handleDeleteClick = (id) => {
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      deleteFeedback(id);
+    }
+  };
+
   const handlePropertyClick = (propertyId) => {
+    setSelectedUnit("");
+    setSelectedFacilityId(null);
     setSelectedPropertyId(propertyId);
     setNewFeedback((prevFeedback) => ({
       ...prevFeedback,
@@ -87,6 +102,8 @@ export default function ResidentProperty() {
   };
 
   const handleFacilityClick = (facilityId) => {
+    setSelectedFacilityId(facilityId);
+    setSelectedUnit("");
     setNewFeedback((prevFeedback) => ({
       ...prevFeedback,
       facility_id: parseInt(facilityId),
@@ -169,8 +186,14 @@ export default function ResidentProperty() {
       </Slider>
 
       {selectedProperty && (
-        <div className="property-header">
-          <h3>{selectedProperty.name}</h3>
+        <div
+          className="property-header"
+          style={{ backgroundColor: selectedProperty.color, marginTop: "20px" }}
+        >
+          <div>
+            <h3>{selectedProperty.name}</h3>
+            <h6>Click on facility to provide feedback</h6>
+          </div>
         </div>
       )}
 
@@ -179,6 +202,11 @@ export default function ResidentProperty() {
           <div
             key={facility.id}
             className="facility"
+            style={
+              facility.id === selectedFacilityId
+                ? { border: "2px solid black" }
+                : {}
+            }
             onClick={() => handleFacilityClick(facility.id)}
           >
             <img
@@ -189,6 +217,9 @@ export default function ResidentProperty() {
             <h3 className="facility__title">{facility.name}</h3>
             <p className="facility__booking-limit">
               Booking Limit: {facility.booking_limit} hrs
+            </p>
+            <p className="facility__booking-limit">
+              Max Capacity: {facility.max_capacity}
             </p>
             <p className="facility__booking-limit">
               Opening hours: <br />
@@ -212,7 +243,6 @@ export default function ResidentProperty() {
           !isNaN(newFeedback.facility_id) && (
             <div className="resident-property-section">
               <label className="resident-property-label">
-                Choose Unit:
                 <select value={selectedUnit} onChange={handleUnitClick}>
                   <option value={""}>Select Unit</option>
                   {units.map((unit) => (
@@ -224,31 +254,32 @@ export default function ResidentProperty() {
               </label>
               {selectedUnit && (
                 <label className="resident-property-label">
-                  Comment:
                   <textarea
                     value={newFeedback.comment}
+                    placeholder="Feedback:"
                     onChange={handleCommentChange}
                   />
                 </label>
               )}
             </div>
           )}
-        {selectedUnit && <button onClick={handleSubmit}>Submit</button>}
+        {selectedUnit && <Button onClick={handleSubmit}>Submit</Button>}
       </div>
 
       {/* Feedback table */}
       {selectedPropertyId !== null && (
-        <table className="my-table">
+        <table className="my-feedback">
           <thead>
             <tr>
               <th>Facility Name</th>
-              <th>User Property Unit No</th>
+              <th>Unit No</th>
               <th>User Name</th>
               <th>Comment</th>
               <th>Created At</th>
               <th>Reply</th>
               <th>Updated At</th>
               <th>Completed</th>
+              <th>Delete comment</th>
             </tr>
           </thead>
           <tbody>
@@ -286,13 +317,24 @@ export default function ResidentProperty() {
                       </td>
                       <td>{feedback.reply}</td>
                       <td>
-                        {feedback.reply || feedback.reply === ""
-                          ? moment(feedback.updatedAt)
-                              .tz("Asia/Singapore")
-                              .format("DD-MMM-YYYY h:mm a")
-                          : ""}
+                        {feedback.reply &&
+                          moment(feedback.updatedAt)
+                            .tz("Asia/Singapore")
+                            .format("DD-MMM-YYYY h:mm a")}
                       </td>
                       <td>{feedback.completed ? "Yes" : "No"}</td>
+                      <td>
+                        {feedback.user_id === loggedInUser.id && (
+                          <Button
+                            variant="danger"
+                            onClick={() => {
+                              handleDeleteClick(feedback.id);
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        )}
+                      </td>
                     </tr>
                   );
                 })}

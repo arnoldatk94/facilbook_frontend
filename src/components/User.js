@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import { PrimaryContext } from "../context/PrimaryContext";
 import "./User.css";

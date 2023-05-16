@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import "./Bookings.css";
 
@@ -16,43 +16,6 @@ export default function Bookings() {
     loggedInUser,
     deleteBooking,
   } = useContext(PrimaryContext);
-
-  useEffect(() => {
-    console.log(loggedInUser);
-  });
-
-  // Format booking in state
-  // const formatBookingsData = (
-  //   bookings,
-  //   users,
-  //   facilities,
-  //   usersProperties,
-  //   properties
-  // ) => {
-  //   return bookings.map((booking) => {
-  //     const user = users.find((user) => user.id === booking.user_id);
-  //     const facility = facilities.find(
-  //       (facility) => facility.id === booking.facility_id
-  //     );
-  //     const userProperty = usersProperties.find(
-  //       (property) => property.id === booking.user_property_id
-  //     );
-  //     const property = properties.find(
-  //       (property) => property.id === booking.property_id
-  //     );
-
-  //     return {
-  //       user: `${user.first_name} ${user.last_name}`,
-  //       facility: facility.name,
-  //       property: property.name,
-  //       unitNo: userProperty.unit_no,
-  //       startTime: new Date(booking.start_time),
-  //       endTime: new Date(booking.end_time),
-  //       color: property.color,
-  //       booking_id: booking.id,
-  //     };
-  //   });
-  // };
 
   const formatBookingsData = (
     bookings,
@@ -112,15 +75,11 @@ export default function Bookings() {
       );
       setLocalBookings(formattedBookings);
     }
-  }, [users, properties, usersProperties, facilities, bookings]);
+  }, [users, properties, usersProperties, facilities, bookings, loggedInUser]);
 
   useEffect(() => {
     setFilteredData(localBookings);
   }, [localBookings]);
-
-  useEffect(() => {
-    console.log(filteredData);
-  });
 
   const handleFilterChange = (e) => {
     const value = e.target.value.toLowerCase();

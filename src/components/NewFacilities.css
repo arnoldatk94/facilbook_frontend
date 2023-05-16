@@ -10,8 +10,8 @@
 
 .form-table td label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  /* margin-bottom: 5px; */
+  font-weight: lighter;
   text-align: left;
   padding-right: 10px;
 }
@@ -23,7 +23,7 @@
 .form-table td select {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-radius: 4px;
   box-sizing: border-box;
 }

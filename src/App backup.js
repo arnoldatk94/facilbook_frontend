@@ -8,11 +8,6 @@ import { PrimaryContextProvider } from "./context/PrimaryContext";
 
 import Management from "./components/Management";
 import ResidentProperty from "./components/ResidentProperty";
-import Feedback from "./components/Feedback";
-import User from "./components/User";
-import UserManagement from "./components/UserManagement";
-import NewProperties from "./components/NewProperties";
-import NewFacilities from "./components/NewFacilities";
 
 function App() {
   return (
@@ -25,13 +20,9 @@ function App() {
             <Route path="/properties" element={<ResidentProperty />} />
             <Route path="/calendar" element={<CalendarComponent />} />
             <Route path="/bookings" element={<Bookings />} />
-            <Route path="/management" element={<Management />}>
-              <Route path="feedback" element={<Feedback />} />
-              <Route path="users" element={<User />} />
-              <Route path="user-properties" element={<UserManagement />} />
-              <Route path="new-properties" element={<NewProperties />} />
-              <Route path="new-facilities" element={<NewFacilities />} />
-            </Route>
+            <Route path="/management" element={<Management />} />
+            {/* within management, nest route to render additional components within Management
+            Management needs outlet  */}
           </Routes>
         </div>
       </BrowserRouter>

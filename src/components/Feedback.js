@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { PrimaryContext } from "../context/PrimaryContext";
 
-import "./Property.css";
+import "./Feedback.css";
 import moment from "moment";
 import { Button } from "react-bootstrap";
 
-export default function Property() {
+export default function Feedback() {
   const {
     properties,
     facilities,
@@ -17,7 +17,7 @@ export default function Property() {
     users,
     usersProperties,
     replyFeedback,
-    updateFacility,
+    deleteFeedback,
   } = useContext(PrimaryContext);
   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -26,6 +26,12 @@ export default function Property() {
     reply: "",
     completed: false,
   });
+
+  const handleDeleteClick = (id) => {
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      deleteFeedback(id);
+    }
+  };
 
   const updateComment = (feedback) => {
     replyFeedback(
@@ -127,7 +133,7 @@ export default function Property() {
       {selectedProperty && (
         <div
           className="property-header"
-          style={{ backgroundColor: selectedProperty.color }}
+          style={{ backgroundColor: selectedProperty.color, marginTop: "20px" }}
         >
           <h3>{selectedProperty.name}</h3>
         </div>
@@ -163,18 +169,18 @@ export default function Property() {
       </div>
 
       {selectedPropertyId !== null && (
-        <table className="my-table">
+        <table className="my-feedback">
           <thead>
             <tr>
-              <th>Facility Name</th>
-              <th>User Property Unit No</th>
-              <th>User Name</th>
+              <th>Facility</th>
+              <th>Unit No</th>
+              <th>Resident</th>
               <th>Comment</th>
-              <th>Created At</th>
+              <th>Created</th>
               <th>Reply</th>
-              <th>Updated At</th>
+              <th>Updated </th>
               <th>Completed</th>
-              <th>Edit</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -237,8 +243,15 @@ export default function Property() {
 
                       <td>
                         {editCommentId === feedback.id ? (
-                          <div>
-                            <label>
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <label
+                              style={{
+                                display: "inline-block",
+                                marginRight: "10px",
+                              }}
+                            >
                               <input
                                 type="radio"
                                 name="completed"
@@ -253,7 +266,12 @@ export default function Property() {
                               />
                               Yes
                             </label>
-                            <label>
+                            <label
+                              style={{
+                                display: "inline-block",
+                                marginRight: "10px",
+                              }}
+                            >
                               <input
                                 type="radio"
                                 name="completed"
@@ -277,7 +295,7 @@ export default function Property() {
                       </td>
 
                       <td>
-                        {editCommentId === feedback.id ? (
+                        {editMode && editCommentId === feedback.id ? (
                           <>
                             <Button
                               variant="success"
@@ -300,6 +318,14 @@ export default function Property() {
                               }}
                             >
                               Edit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              onClick={() => {
+                                handleDeleteClick(feedback.id);
+                              }}
+                            >
+                              Delete
                             </Button>
                           </>
                         )}

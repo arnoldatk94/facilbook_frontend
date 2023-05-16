@@ -1,0 +1,15 @@
+.navbar-gradient {
+  background: linear-gradient(to bottom right, #7bacff, #768cb8);
+}
+
+.navbar {
+  color: white;
+}
+
+.navbar a {
+  color: white;
+}
+
+.navbar-gradient .nav-link:hover {
+  color: #ffffff;
+}

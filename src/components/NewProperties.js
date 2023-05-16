@@ -1,6 +1,6 @@
 import "./NewProperties.css";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { PrimaryContext } from "../context/PrimaryContext";
@@ -24,7 +24,6 @@ export default function NewProperties() {
     try {
       await uploadBytes(imageRef, imageUpload);
       const url = await getDownloadURL(imageRef);
-      // console.log(url);
       const newProperty = {
         name,
         address,
@@ -39,7 +38,6 @@ export default function NewProperties() {
       setImageUpload(null);
       setPreviewUrl(null);
       fileInputRef.current.value = "";
-      // console.log(JSON.stringify(newProperty));
     } catch (error) {
       console.log(error);
     }
@@ -103,17 +101,11 @@ export default function NewProperties() {
                 <label htmlFor="color">Color:</label>
               </td>
               <td>
-                {/* <input
-                  type="color"
-                  id="color"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
-                /> */}
                 <input
                   type="color"
                   id="color"
-                  value={`#${color}`}
-                  onChange={(e) => setColor(e.target.value.replace("#", ""))}
+                  value={`${color}`}
+                  onChange={(e) => setColor(e.target.value)}
                 />
               </td>
             </tr>
@@ -128,7 +120,7 @@ export default function NewProperties() {
                   <img
                     src={previewUrl}
                     alt="Preview"
-                    style={{ maxWidth: "400px" }}
+                    style={{ maxWidth: "200px", maxHeight: "200px" }}
                   />
                 </td>
               </tr>

@@ -1,5 +1,5 @@
 import "./Home.css";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import ResidentRequestLink from "./ResidentRequestLink";
 import { Button } from "react-bootstrap";
@@ -21,8 +21,6 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Update the backend with updatedUser state
-
     const phoneRegex = /^\d{8,}$/;
     if (!phoneRegex.test(updatedUser.phone)) {
       alert("Please enter a valid phone number with at least 8 digits.");
@@ -36,23 +34,20 @@ export default function Home() {
     setIsEditing(false);
   };
 
-  // useEffect(() => {
-  //   if (loggedInUser !== null) {
-  //     console.log("Logged In User: ", loggedInUser);
-  //     console.log("Logged In User Properties: ", loggedInUsersProperties);
-  //   } else {
-  //     console.log("Not logged in");
-  //   }
-  // }, [loggedInUser, loggedInUsersProperties]);
-
   const propertyMap = properties.reduce((map, property) => {
     map[property.id] = property.name;
+    return map;
+  }, {});
+
+  const propertyColorMap = properties.reduce((map, property) => {
+    map[property.id] = property.color;
     return map;
   }, {});
 
   return loggedInUser ? (
     <div>
       <div>
+        {/* Profile Table */}
         <table className="my-table">
           <thead>
             <tr>
@@ -104,24 +99,31 @@ export default function Home() {
           </tbody>
         </table>
       </div>
-      {/* property info */}
-      <table className="my-table">
-        <thead>
-          <tr>
-            <th>Property</th>
-            <th>Unit Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loggedInUsersProperties &&
-            loggedInUsersProperties.map((property) => (
-              <tr key={property.id}>
-                <td>{propertyMap[property.property_id]}</td>
-                <td>{property.unit_no}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div>
+        {/* property info */}
+        <table className="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Unit Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loggedInUsersProperties &&
+              loggedInUsersProperties.map((property) => (
+                <tr
+                  key={property.id}
+                  style={{
+                    backgroundColor: propertyColorMap[property.property_id],
+                  }}
+                >
+                  <td>{propertyMap[property.property_id]}</td>
+                  <td>{property.unit_no}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
       <ResidentRequestLink />
     </div>
   ) : (

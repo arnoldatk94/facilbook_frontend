@@ -1,11 +1,28 @@
 import React, { useContext, useState } from "react";
+import { Button } from "react-bootstrap";
 import { PrimaryContext } from "../context/PrimaryContext";
 import RequestLinking from "./RequestLinking";
 import "./UserManagement.css";
 
 export default function UserManagement() {
-  const { properties, users, usersProperties, addNewUserProperty } =
-    useContext(PrimaryContext);
+  const {
+    properties,
+    users,
+    usersProperties,
+    addNewUserProperty,
+    deleteUserProperty,
+  } = useContext(PrimaryContext);
+
+  const handleDeleteClick = (id) => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this property and all related bookings and feedback?"
+      )
+    ) {
+      deleteUserProperty(id);
+    }
+  };
+
   const [filters, setFilters] = useState({
     userName: "",
     propertyName: "",
@@ -32,7 +49,7 @@ export default function UserManagement() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("formData", formData);
+    // console.log("formData", formData);
     addNewUserProperty(formData);
   };
 
@@ -75,12 +92,16 @@ export default function UserManagement() {
     );
   });
 
+  const propertyColors = {};
+  properties.forEach((property) => {
+    propertyColors[property.id] = property.color;
+  });
+
   return (
     <div>
       <div>
         <form onSubmit={handleSubmit} className="my-form">
           <label>
-            User:
             <select
               name="userId"
               value={formData.userId}
@@ -95,7 +116,6 @@ export default function UserManagement() {
             </select>
           </label>
           <label>
-            Property:
             <select
               name="propertyId"
               value={formData.propertyId}
@@ -110,10 +130,10 @@ export default function UserManagement() {
             </select>
           </label>
           <label>
-            Unit No:
             <input
               type="text"
               name="unitNo"
+              placeholder="Unit No:"
               value={formData.unitNo}
               onChange={handleFormChange}
             />
@@ -130,7 +150,7 @@ export default function UserManagement() {
           <button type="submit">Add User Property</button>
         </form>
         <RequestLinking />
-        <table className="my-table">
+        <table className="my-user-table">
           <thead>
             <tr>
               <th>
@@ -165,21 +185,37 @@ export default function UserManagement() {
                   onChange={handleFilterChange("isManagement")}
                 />
               </th>
+              <th rowSpan={2} style={{ textAlign: "center" }}>
+                Delete
+              </th>
             </tr>
             <tr>
-              <th>User Name</th>
-              <th>Property Name</th>
+              <th>Resident</th>
+              <th>Property</th>
               <th>Unit No</th>
-              <th>Is Management</th>
+              <th>Management</th>
             </tr>
           </thead>
           <tbody>
             {filteredUsersProperties.map((up) => (
-              <tr key={up.id}>
+              <tr
+                key={up.id}
+                style={{ backgroundColor: propertyColors[up.property_id] }}
+              >
                 <td>{renderUserName(up.user_id)}</td>
                 <td>{renderPropertyName(up.property_id)}</td>
                 <td>{up.unit_no}</td>
                 <td>{up.is_management ? "Yes" : "No"}</td>
+                <td>
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      handleDeleteClick(up.id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>

@@ -1,6 +1,6 @@
 import "./EditProperties.css";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -12,7 +12,7 @@ export default function EditProperties() {
   const [editing, setEditing] = useState(null);
   const [editName, setEditName] = useState("");
   const [editAddress, setEditAddress] = useState("");
-  const [editColor, setEditColor] = useState("");
+  const [editColor, setEditColor] = useState("#000000");
   const [previewPhoto, setPreviewPhoto] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
 
@@ -20,11 +20,7 @@ export default function EditProperties() {
     setFilter(event.target.value);
   };
 
-  useEffect(() => {
-    console.log(imageUpload);
-  }, [imageUpload]);
   const handleEditClick = (property) => {
-    // console.log(property);
     setEditName("");
     setEditAddress("");
     setEditColor("");

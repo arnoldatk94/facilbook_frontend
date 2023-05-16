@@ -1,6 +1,6 @@
 import "./RequestLinking.css";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { PrimaryContext } from "../context/PrimaryContext";
 import { Button } from "react-bootstrap";
 
@@ -127,65 +127,75 @@ export default function RequestLinking() {
           </tr>
         </thead>
         <tbody>
-          {filteredRequests.map((request) => (
-            <tr key={request.id}>
-              <td>
-                {users.find((user) => user.id === request.user_id).first_name}{" "}
-                {users.find((user) => user.id === request.user_id).last_name}
-              </td>
-              <td>
-                {
-                  properties.find(
-                    (property) => property.id === request.property_id
-                  ).name
-                }
-              </td>
-              <td>{request.unit_no}</td>
-              <td>
-                {editting && editting.id === request.id ? (
-                  <select
-                    value={editingStatus}
-                    onChange={(e) => setEditingStatus(e.target.value)}
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="Denied">Denied</option>
-                    <option value="Completed">Completed</option>
-                  </select>
-                ) : (
-                  request.request_status
-                )}
-              </td>
-              <td>
-                {editting && editting.id === request.id ? (
-                  <>
-                    <Button
-                      variant="success"
-                      onClick={() => handleSaveClick(request)}
+          {filteredRequests.length ? (
+            filteredRequests.map((request) => (
+              <tr key={request.id}>
+                <td>
+                  {users.find((user) => user.id === request.user_id).first_name}{" "}
+                  {users.find((user) => user.id === request.user_id).last_name}
+                </td>
+                <td>
+                  {
+                    properties.find(
+                      (property) => property.id === request.property_id
+                    ).name
+                  }
+                </td>
+                <td>{request.unit_no}</td>
+                <td>
+                  {editting && editting.id === request.id ? (
+                    <select
+                      value={editingStatus}
+                      onChange={(e) => setEditingStatus(e.target.value)}
                     >
-                      Save
+                      <option value="Pending">Pending</option>
+                      <option value="Denied">Denied</option>
+                      <option value="Completed">Completed</option>
+                    </select>
+                  ) : (
+                    request.request_status
+                  )}
+                </td>
+                <td>
+                  {editting && editting.id === request.id ? (
+                    <>
+                      <Button
+                        variant="success"
+                        onClick={() => handleSaveClick(request)}
+                      >
+                        Save
+                      </Button>
+                      <Button variant="danger" onClick={handleCancelClick}>
+                        Cancel
+                      </Button>
+                    </>
+                  ) : (
+                    <Button onClick={() => handleEditClick(request)}>
+                      Edit
                     </Button>
-                    <Button variant="danger" onClick={handleCancelClick}>
-                      Cancel
+                  )}
+                </td>
+                <td>
+                  {request.request_status === "Completed" ||
+                  request.request_status === "Denied" ? (
+                    <Button
+                      onClick={() => {
+                        handleClearClick(request);
+                      }}
+                    >
+                      Clear
                     </Button>
-                  </>
-                ) : (
-                  <Button onClick={() => handleEditClick(request)}>Edit</Button>
-                )}
-              </td>
-              <td>
-                {request.request_status === "Completed" ||
-                request.request_status === "Denied" ? (
-                  <Button
-                    onClick={() => {
-                      handleClearClick(request);
-                    }}
-                  >
-                    Clear
-                  </Button>
-                ) : null}
+                  ) : null}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" style={{ textAlign: "center" }}>
+                No incoming requests
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

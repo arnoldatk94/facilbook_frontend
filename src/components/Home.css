@@ -2,7 +2,7 @@
   border-collapse: collapse;
   border: 1px solid #ccc;
   margin-top: 20px;
-  width: 80%;
+  max-width: 50%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -20,4 +20,26 @@
 
 .my-table th {
   font-weight: bold;
+}
+
+.property-table {
+  width: 45%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  border: 1px solid #252525;
+  background-color: #f9f9f9;
+}
+
+.property-table th {
+  background-color: #ddd;
+  border: 1px solid #252525;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+
+.property-table td {
+  border: 1px solid #252525;
+  padding: 8px;
+  text-align: center;
 }
