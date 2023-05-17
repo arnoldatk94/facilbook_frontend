@@ -19,7 +19,6 @@ function App() {
     <PrimaryContextProvider>
       <BrowserRouter>
         <div className="App">
-          <h1>Circle CI Test</h1>
           <NavbarComp />
           <Routes>
             <Route path="/" element={<Home />} />

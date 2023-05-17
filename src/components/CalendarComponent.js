@@ -35,7 +35,6 @@ export default function CalendarComponent() {
   const handleSelectEvent = (event) => {
     setSelectedDay(event.startTime);
     setSelectedEvent(event);
-    console.log(event);
   };
 
   // Format booking in state

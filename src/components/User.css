@@ -51,3 +51,51 @@
   cursor: pointer;
   border-radius: 5px;
 }
+
+.my-users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.my-users-table th,
+.my-users-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.my-users-table th {
+  background-color: #f2f2f2;
+}
+
+.my-users-table input[type="text"] {
+  width: 100%;
+  padding: 5px;
+}
+
+.my-users-table button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.my-users-table button.variant-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border: none;
+}
+
+.my-users-table button.variant-success {
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+}
+
+.my-users-table button:hover {
+  opacity: 0.8;
+}
+
+.my-users-table button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

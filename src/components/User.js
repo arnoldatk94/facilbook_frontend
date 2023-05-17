@@ -4,7 +4,8 @@ import { PrimaryContext } from "../context/PrimaryContext";
 import "./User.css";
 
 export default function User() {
-  const { users, addUser, editManagementUserData } = useContext(PrimaryContext);
+  const { users, addUser, editManagementUserData, deleteUser } =
+    useContext(PrimaryContext);
   const [newUser, setNewUser] = useState({
     first_name: "",
     last_name: "",
@@ -27,9 +28,6 @@ export default function User() {
     phone: "",
   });
 
-  // useEffect(() => {
-  //   console.log(updatedUser);
-  // }, [updatedUser]);
   const filteredUsers = users.filter((user) => {
     return (
       user.first_name
@@ -72,6 +70,16 @@ export default function User() {
       last_name: "",
       phone: "",
     });
+  };
+
+  const handleDeleteClick = (id) => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this user? This action cannot be undone."
+      )
+    ) {
+      deleteUser(id);
+    }
   };
 
   const handleEditSubmit = (e) => {
@@ -150,7 +158,7 @@ export default function User() {
           Add User
         </Button>
       </form>
-      <table className="my-table">
+      <table className="my-users-table">
         <thead>
           <tr>
             <th>
@@ -201,7 +209,7 @@ export default function User() {
                 />
               </form>
             </th>
-            <th>Edit</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -261,7 +269,7 @@ export default function User() {
               <td>{user.email}</td>
               <td>
                 {editingId === user.id ? (
-                  <>
+                  <div style={{ display: "inline-block" }}>
                     <Button variant="danger" onClick={handleCancelClick}>
                       Cancel
                     </Button>
@@ -271,9 +279,21 @@ export default function User() {
                     >
                       Submit
                     </Button>
-                  </>
+                  </div>
                 ) : (
-                  <Button onClick={() => handleEditClick(user.id)}>Edit</Button>
+                  <div style={{ display: "inline-block" }}>
+                    <Button onClick={() => handleEditClick(user.id)}>
+                      Edit
+                    </Button>
+                    <Button
+                      variant="danger"
+                      onClick={() => {
+                        handleDeleteClick(user.id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 )}
               </td>
             </tr>

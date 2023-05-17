@@ -190,6 +190,15 @@ export const PrimaryContextProvider = ({ children }) => {
     }
   };
 
+  const deleteUser = async (id) => {
+    try {
+      const response = await axios.delete(`${BACKEND_URL}/users/${id}`);
+      setUsers(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const updateUserData = async (id, phone) => {
     try {
       const response = await axios.put(`${BACKEND_URL}/users/`, {
@@ -204,7 +213,6 @@ export const PrimaryContextProvider = ({ children }) => {
   };
 
   const editManagementUserData = async (id, updatedUser) => {
-    console.log(updatedUser);
     try {
       const response = await axios.put(`${BACKEND_URL}/users/${id}`, {
         first_name: updatedUser.first_name,
@@ -380,6 +388,7 @@ export const PrimaryContextProvider = ({ children }) => {
     addLinkRequest,
     deleteFeedback,
     deleteUserProperty,
+    deleteUser,
   };
 
   return (
