@@ -55,13 +55,15 @@
 .my-users-table {
   width: 100%;
   border-collapse: collapse;
+  border: 1px solid #dddddd;
 }
 
 .my-users-table th,
 .my-users-table td {
   padding: 10px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
 }
 
 .my-users-table th {
@@ -80,13 +82,13 @@
 }
 
 .my-users-table button.variant-danger {
-  color: #fff;
+  color: #ffffff;
   background-color: #dc3545;
   border: none;
 }
 
 .my-users-table button.variant-success {
-  color: #fff;
+  color: #ffffff;
   background-color: #28a745;
   border: none;
 }

@@ -190,7 +190,7 @@ export default function UserManagement() {
               </th>
             </tr>
             <tr>
-              <th>Resident</th>
+              <th style={{ textAlign: "center" }}>Resident</th>
               <th>Property</th>
               <th>Unit No</th>
               <th>Management</th>

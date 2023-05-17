@@ -97,7 +97,6 @@ export default function NewFacilities() {
         photoUrl: url,
       };
 
-      console.log(JSON.stringify(newFacility));
       addFacility(newFacility);
     } catch (error) {
       console.log(error);
